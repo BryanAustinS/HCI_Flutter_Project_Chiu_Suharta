@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class KundeHome extends StatefulWidget {
-  const KundeHome({super.key});
+class TechnikerHome extends StatefulWidget {
+  const TechnikerHome({super.key});
 
   @override
-  State<KundeHome> createState() => _KundeHomeState();
+  State<TechnikerHome> createState() => _TechnikerHomeState();
 }
 
-class _KundeHomeState extends State<KundeHome> {
+class _TechnikerHomeState extends State<TechnikerHome> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Colors.red;
@@ -21,9 +21,9 @@ class _KundeHomeState extends State<KundeHome> {
         title: Text(
           'FAHRRARZT',
           style: TextStyle(
-            fontSize: 48,
+            fontSize: 36,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             letterSpacing: 2.0,
             color: bgColor,
           ),
@@ -45,16 +45,17 @@ class _KundeHomeState extends State<KundeHome> {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, 
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Reparatur buchen
+
+              // Reparaturen ansehen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Reparatur buchen button clicked');
-                    // Navigate to page KundeReparaturBuchen
+                    print('Reparaturen ansehen button clicked');
+                    // Navigate to page TechnikerReparaturAnsehen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -65,7 +66,7 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.construction, 
+                          Icons.list_alt, 
                           color: primaryColor,
                           size: 100.0,
                         ),
@@ -75,7 +76,7 @@ class _KundeHomeState extends State<KundeHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Reparatur buchen',
+                              'Reparaturen ansehen',
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
@@ -88,15 +89,16 @@ class _KundeHomeState extends State<KundeHome> {
                   ),
                 ),
               ),
-              SizedBox(height: 20), 
-              // Antrag verfolgen
+              SizedBox(height: 20),
+
+              // Auslastung ansehen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Antrag verfolgen button clicked');
-                    // Navigate to page KundeAntragVerfolgen
+                    print('Auslastung ansehen button clicked');
+                    // Navigate to page TechnikerAuslastungAnsehen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -107,7 +109,7 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.timeline, 
+                          Icons.warehouse, 
                           color: primaryColor,
                           size: 100.0,
                         ),
@@ -117,7 +119,7 @@ class _KundeHomeState extends State<KundeHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Antrag verfolgen',
+                              'Auslastung ansehen',
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,

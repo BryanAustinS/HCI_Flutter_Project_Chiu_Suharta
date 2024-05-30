@@ -19,11 +19,10 @@ flutter:
   uses-material-design: true
 
 fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets\fonts\Poppins-Black.ttf
+  - family: Poppins
+    fonts:
+      - asset: hci_hda_chiu_suharta/assets/fonts/Poppins-Black.ttf
 
-    - family: Montserrat
-      fonts:
-        - asset: assets\fonts\Montserrat-BlackItalic.ttf
-        
+  - family: Montserrat
+    fonts:
+      - asset: hci_hda_chiu_suharta/assets/fonts/Montserrat-BlackItalic.ttf
