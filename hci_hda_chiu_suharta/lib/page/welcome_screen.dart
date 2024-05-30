@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     text: const TextSpan(children: [
                       TextSpan(
-                          text: 'Welcome to FahrrAzt!\n',
+                          text: 'Welcome to FahrrArzt!\n',
                           style: TextStyle(
                             fontSize: 45.0,
                             fontWeight: FontWeight.w600,
