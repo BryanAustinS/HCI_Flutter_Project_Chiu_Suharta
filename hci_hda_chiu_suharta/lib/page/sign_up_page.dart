@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/page/sign_in_screen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 
@@ -11,7 +12,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignUpKey = GlobalKey<FormState>();
-  bool agreePersonalData = true;
+  bool agreePersonalData = false;
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -50,6 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 40.0,
                     ),
+                    // Full name form
                     TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -74,6 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 25.0,
                     ),
+                    // Email form
                     TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -101,6 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
+                    // Password form
                     const SizedBox(
                       height: 25.0,
                     ),
@@ -135,6 +139,99 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 25.0,
+                    ),
+                    // i agree to processing
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: agreePersonalData,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              agreePersonalData = value!;
+                            });
+                          },
+                          activeColor: lightColorScheme.primary,
+                        ),
+                        const Text(
+                          'I agree to the processing of ',
+                          style: TextStyle(
+                            color: Colors.black45,
+                          ),
+                        ),
+                        Text(
+                          'Personal data',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: lightColorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 25.0,
+                    ),
+                    // Signup button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formSignUpKey.currentState!.validate() &&
+                              agreePersonalData) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Processing Data'),
+                              ),
+                            );
+                          } else if (!agreePersonalData) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Please agree to the processing of personal data',
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text('Sign up'),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25.0,
+                    ),
+                    // already have an account
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Already have an account? ',
+                          style: TextStyle(
+                            color: Colors.black45,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (e) => const SignInScreen(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Sign in',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: lightColorScheme.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 25.0,
+                    )
                   ],
                 ),
               ),
