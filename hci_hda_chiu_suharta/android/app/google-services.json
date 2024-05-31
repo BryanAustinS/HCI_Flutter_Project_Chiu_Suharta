@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "731043257283",
+    "project_id": "hci-hda",
+    "storage_bucket": "hci-hda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731043257283:android:9518c11fc00fa9bf10bb76",
+        "android_client_info": {
+          "package_name": "com.example.hci_hda_chiu_suharta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6byL16gWaGXDd_8PnCnPGTAJlUSzoiPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

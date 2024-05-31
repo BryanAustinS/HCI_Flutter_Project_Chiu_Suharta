@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  firebase_core: ^2.32.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
