@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
@@ -17,6 +18,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool agreePersonalData = false;
 
   final FirebaseAuthService _auth = FirebaseAuthService();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -273,6 +275,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       User? user = await _auth.signupWithEmailAndPassword(email, password);
 
       if (user != null) {
+        await _firestore.collection('user').doc(user.uid).set({
+          'name': name,
+          'email': email,
+          'role': 'kunde',
+        });
         print("User is successfully created");
         // Navigate to the desired screen or show success message
       } else {
