@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
+import 'package:hci_hda_chiu_suharta/page/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/page/sign_up_page.dart';
+import 'package:hci_hda_chiu_suharta/page/techniker_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 
@@ -30,7 +32,6 @@ class _SignInScreenState extends State<SignInScreen> {
     _passwordController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -216,32 +217,43 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
-  Future<void> _signIn() async{
-    setState((){
+
+  Future<void> _signIn() async {
+    setState(() {
       _isSigning = true;
     });
 
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    try{
+    try {
       User? user = await _auth.signinWithEmailAndPassword(email, password);
 
-      if(user != null){
-        DocumentSnapshot userDoc = await _firestore.collection('user').doc(user.uid).get();
-        if (userDoc.exists){
-          Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await _firestore.collection('user').doc(user.uid).get();
+        if (userDoc.exists) {
+          Map<String, dynamic>? userData =
+              userDoc.data() as Map<String, dynamic>?;
           String? role = userData?['role'];
 
           Fluttertoast.showToast(msg: "User is successfully signed in");
 
           //Navigate to different homepages based on the role
-          if (role == 'betreiber'){
+          if (role == 'betreiber') {
             Fluttertoast.showToast(msg: "Navigate to betreiber homepage");
-          } else if (role == 'kunde'){
+          } else if (role == 'kunde') {
             Fluttertoast.showToast(msg: "Navigate to kunde homepage");
-          } else if (role == 'techniker'){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => KundeHome()),
+            );
+          } else if (role == 'techniker') {
             Fluttertoast.showToast(msg: "Navigate to techniker homepage");
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => TechnikerHome()),
+            );
           } else {
             Fluttertoast.showToast(msg: 'Unknown role');
           }
@@ -251,10 +263,9 @@ class _SignInScreenState extends State<SignInScreen> {
       } else {
         Fluttertoast.showToast(msg: "Sign in failed");
       }
-
-    }catch (e) {
+    } catch (e) {
       Fluttertoast.showToast(msg: "Error: ${e.toString()}");
-    }finally{
+    } finally {
       setState(() {
         _isSigning = false;
       });
@@ -262,9 +273,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
     User? user = await _auth.signinWithEmailAndPassword(email, password);
 
-    if(user != null){
+    if (user != null) {
       Fluttertoast.showToast(msg: "User is succesfully signed in");
-    }else{
+    } else {
       Fluttertoast.showToast(msg: "Wrong email or password");
     }
   }
