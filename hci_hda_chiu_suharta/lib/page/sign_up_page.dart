@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
 import 'package:hci_hda_chiu_suharta/page/sign_in_screen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
@@ -13,6 +15,22 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignUpKey = GlobalKey<FormState>();
   bool agreePersonalData = false;
+
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -53,6 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     // Full name form
                     TextFormField(
+                      controller: _nameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter Full name';
@@ -78,6 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     // Email form
                     TextFormField(
+                      controller: _emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter Email';
@@ -109,6 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 25.0,
                     ),
                     TextFormField(
+                      controller: _passwordController,
                       obscureText: true,
                       obscuringCharacter: '*',
                       validator: (value) {
@@ -176,7 +197,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formSignUpKey.currentState!.validate() &&
                               agreePersonalData) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -184,6 +205,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 content: Text('Processing Data'),
                               ),
                             );
+                            await _signUp();
                           } else if (!agreePersonalData) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -240,5 +262,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ]),
     );
+  }
+
+  Future<void> _signUp() async {
+    String name = _nameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    try {
+      User? user = await _auth.signupWithEmailAndPassword(email, password);
+
+      if (user != null) {
+        print("User is successfully created");
+        // Navigate to the desired screen or show success message
+      } else {
+        print("Some error occurred");
+        // Show error message
+      }
+    } catch (e) {
+      print("Error: $e");
+      // Show error message
+    }
   }
 }
