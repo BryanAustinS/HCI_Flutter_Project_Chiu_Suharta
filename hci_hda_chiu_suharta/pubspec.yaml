@@ -10,6 +10,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.20.0
+  firebase_storage: ^11.7.7
+  cloud_firestore: ^4.17.5
+  fluttertoast: ^8.2.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -17,12 +23,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: hci_hda_chiu_suharta/assets/fonts/Poppins-Black.ttf
 
-fonts:
-  - family: Poppins
-    fonts:
-      - asset: hci_hda_chiu_suharta/assets/fonts/Poppins-Black.ttf
-
-  - family: Montserrat
-    fonts:
-      - asset: hci_hda_chiu_suharta/assets/fonts/Montserrat-BlackItalic.ttf
+    - family: Montserrat
+      fonts:
+        - asset: hci_hda_chiu_suharta/assets/fonts/Montserrat-BlackItalic.ttf
