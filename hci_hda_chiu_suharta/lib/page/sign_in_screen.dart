@@ -18,7 +18,7 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
-  bool rememberPassword = true;
+  bool agreePersonalData = true;
   final FirebaseAuthService _auth = FirebaseAuthService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   TextEditingController _emailController = TextEditingController();
@@ -130,16 +130,16 @@ class _SignInScreenState extends State<SignInScreen> {
                           Row(
                             children: [
                               Checkbox(
-                                value: rememberPassword,
+                                value: agreePersonalData,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    rememberPassword = value!;
+                                    agreePersonalData = value!;
                                   });
                                 },
                                 activeColor: lightColorScheme.primary,
                               ),
                               const Text(
-                                'Remember me',
+                                'agree to processing data',
                                 style: TextStyle(
                                   color: Colors.black45,
                                 ),
@@ -156,18 +156,18 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
+                                agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Processing Data'),
                                 ),
                               );
                               await _signIn();
-                            } else if (!rememberPassword) {
+                            } else if (!agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text(
-                                        'Please aggree to the processing of personal data')),
+                                        'Please agree to the processing of personal data')),
                               );
                             }
                           },
