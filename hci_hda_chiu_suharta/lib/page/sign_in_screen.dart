@@ -19,9 +19,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
-  bool _isSigning = false;
   final FirebaseAuthService _auth = FirebaseAuthService();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -219,10 +217,6 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> _signIn() async {
-    setState(() {
-      _isSigning = true;
-    });
-
     String email = _emailController.text;
     String password = _passwordController.text;
 
@@ -246,13 +240,13 @@ class _SignInScreenState extends State<SignInScreen> {
             Fluttertoast.showToast(msg: "Navigate to kunde homepage");
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => KundeHome()),
+              MaterialPageRoute(builder: (context) => const KundeHome()),
             );
           } else if (role == 'techniker') {
             Fluttertoast.showToast(msg: "Navigate to techniker homepage");
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => TechnikerHome()),
+              MaterialPageRoute(builder: (context) => const TechnikerHome()),
             );
           } else {
             Fluttertoast.showToast(msg: 'Unknown role');
@@ -265,10 +259,6 @@ class _SignInScreenState extends State<SignInScreen> {
       }
     } catch (e) {
       Fluttertoast.showToast(msg: "Error: ${e.toString()}");
-    } finally {
-      setState(() {
-        _isSigning = false;
-      });
     }
 
     User? user = await _auth.signinWithEmailAndPassword(email, password);
