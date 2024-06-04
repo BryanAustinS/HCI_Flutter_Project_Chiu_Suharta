@@ -6,4 +6,13 @@ class Kunde extends Person{
   List<Buchung> kundeBuchungen;
 
   Kunde(String id, String name, this.kundeBuchungen) : super(id, name);
+
+    void reparaturBuchen() {
+    // TODO: implement reparaturBuchen
+  }
+
+  void showTracking (String buchungId){
+
+  }
+  
 }

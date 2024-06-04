@@ -6,4 +6,13 @@ class Techniker extends Person{
   List<Buchung> technikerBuchungen;
 
   Techniker(String id, String name, this.technikerBuchungen) : super(id, name);
+
+  void orderErsatzteile(){
+
+  }
+
+  void setStatus(){
+    
+  }
+
 } 
