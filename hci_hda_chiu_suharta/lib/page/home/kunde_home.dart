@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../profile/profile_page.dart';
 
@@ -14,7 +15,8 @@ class _KundeHomeState extends State<KundeHome> {
   Widget build(BuildContext context) {
     Color primaryColor = Colors.red;
     Color bgColor = Colors.white;
-    Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    const Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    var logger = Logger();
 
     return Scaffold(
       // App Bar
@@ -59,7 +61,7 @@ class _KundeHomeState extends State<KundeHome> {
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Reparatur buchen button clicked');
+                    logger.t('Reparatur buchen button clicked');
                     // Navigate to page KundeReparaturBuchen
                   },
                   child: Container(
@@ -75,7 +77,7 @@ class _KundeHomeState extends State<KundeHome> {
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
@@ -94,14 +96,14 @@ class _KundeHomeState extends State<KundeHome> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Antrag verfolgen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Antrag verfolgen button clicked');
+                    logger.t('Antrag verfolgen button clicked');
                     // Navigate to page KundeAntragVerfolgen
                   },
                   child: Container(
@@ -117,7 +119,7 @@ class _KundeHomeState extends State<KundeHome> {
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(

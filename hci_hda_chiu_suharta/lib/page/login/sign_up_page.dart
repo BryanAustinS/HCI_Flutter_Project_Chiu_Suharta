@@ -5,6 +5,7 @@ import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
 import 'package:hci_hda_chiu_suharta/page/login/sign_in_page.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
+import 'package:logger/logger.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,6 +24,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  var logger = Logger();
 
   @override
   void dispose() {
@@ -280,14 +283,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'email': email,
           'role': 'kunde',
         });
-        print("User is successfully created");
+        logger.t("User is successfully created");
         // Navigate to the desired screen or show success message
       } else {
-        print("Some error occurred");
+        logger.e("Some error occurred");
         // Show error message
       }
     } catch (e) {
-      print("Error: $e");
+      logger.e("Error: $e");
       // Show error message
     }
   }

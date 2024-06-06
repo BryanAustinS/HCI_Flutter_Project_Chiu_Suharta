@@ -17,6 +17,7 @@ dependencies:
   fluttertoast: ^8.2.5
   line_awesome_flutter: ^3.0.1
   ionicons: ^0.2.2
+  logger: ^2.3.0
 
 dev_dependencies:
   flutter_test:
