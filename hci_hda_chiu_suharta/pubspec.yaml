@@ -15,6 +15,7 @@ dependencies:
   firebase_storage: ^11.7.7
   cloud_firestore: ^4.17.5
   fluttertoast: ^8.2.5
+  line_awesome_flutter: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -33,3 +34,4 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-BlackItalic.ttf
+
