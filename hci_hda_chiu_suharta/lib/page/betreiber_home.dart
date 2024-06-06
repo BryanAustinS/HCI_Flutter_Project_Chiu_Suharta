@@ -43,14 +43,14 @@ class TechnikerHome extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
-              // Reparaturen ansehen
+              // Einnahme verfolgen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Reparaturen ansehen button clicked');
-                    // Navigate to page TechnikerReparaturAnsehen
+                    print('Einnahme verfolgen pressed');
+                    // Navigate to page EinnahmeVerfolgen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -71,7 +71,7 @@ class TechnikerHome extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Aufträge ansehen',
+                              'Einnahme verfolgen',
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
@@ -86,14 +86,14 @@ class TechnikerHome extends StatelessWidget {
               ),
               SizedBox(height: 20),
 
-              // Auslastung ansehen
+              // Ersatzteile ansehen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Ersatzteile ansehen button clicked');
-                    // Navigate to page TechnikerAuslastungAnsehen
+                    print('Ersatzteile verfolgen button pressed');
+                    // Navigate to page BetreiberAuslastungVerfolgen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -114,7 +114,7 @@ class TechnikerHome extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Ersatzteile ansehen',
+                              'Ersatzteile verfolgen',
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,

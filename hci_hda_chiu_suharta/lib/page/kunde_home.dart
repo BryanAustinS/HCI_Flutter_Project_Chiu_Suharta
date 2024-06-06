@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/theme/theme.dart';
+
 
 class KundeHome extends StatefulWidget {
   const KundeHome({super.key});
@@ -10,8 +12,8 @@ class KundeHome extends StatefulWidget {
 class _KundeHomeState extends State<KundeHome> {
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Colors.red;
-    Color bgColor = Colors.white;
+    Color primaryColor = lightColorScheme.primary;
+    Color bgColor = lightColorScheme.background;
     Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
 
     return Scaffold(
@@ -78,6 +80,8 @@ class _KundeHomeState extends State<KundeHome> {
                               'Reparatur buchen',
                               style: TextStyle(
                                 fontSize: 23,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
@@ -95,7 +99,7 @@ class _KundeHomeState extends State<KundeHome> {
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Antrag verfolgen button clicked');
+                    print('Auftrag verfolgen button clicked');
                     // Navigate to page KundeAntragVerfolgen
                   },
                   child: Container(
@@ -117,9 +121,11 @@ class _KundeHomeState extends State<KundeHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Antrag verfolgen',
+                              'Auftrag verfolgen',
                               style: TextStyle(
                                 fontSize: 23,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
