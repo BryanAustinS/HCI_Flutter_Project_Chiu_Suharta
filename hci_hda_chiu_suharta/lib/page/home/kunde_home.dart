@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:hci_hda_chiu_suharta/globals.dart';
 
 import '../profile/profile_page.dart';
 
@@ -36,12 +37,18 @@ class _KundeHomeState extends State<KundeHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle),
+            icon: Image.asset('assets/images/avatar_profile.png'),
             onPressed: () {
+              var profilePicture =
+                  Image.asset('assets/images/avatar_profile.png');
               //Navigate to profile page
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    profilePicture: profilePicture,
+                  ),
+                ),
               );
             },
             color: bgColor,
