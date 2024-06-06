@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
+import 'package:hci_hda_chiu_suharta/page/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/page/sign_up_page.dart';
+import 'package:hci_hda_chiu_suharta/page/techniker_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 
@@ -16,10 +18,8 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
-  bool rememberPassword = true;
-  bool _isSigning = false;
+  bool agreePersonalData = true;
   final FirebaseAuthService _auth = FirebaseAuthService();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -30,7 +30,6 @@ class _SignInScreenState extends State<SignInScreen> {
     _passwordController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,16 +130,16 @@ class _SignInScreenState extends State<SignInScreen> {
                           Row(
                             children: [
                               Checkbox(
-                                value: rememberPassword,
+                                value: agreePersonalData,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    rememberPassword = value!;
+                                    agreePersonalData = value!;
                                   });
                                 },
                                 activeColor: lightColorScheme.primary,
                               ),
                               const Text(
-                                'Remember me',
+                                'agree to processing data',
                                 style: TextStyle(
                                   color: Colors.black45,
                                 ),
@@ -157,18 +156,18 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
+                                agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Processing Data'),
                                 ),
                               );
                               await _signIn();
-                            } else if (!rememberPassword) {
+                            } else if (!agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text(
-                                        'Please aggree to the processing of personal data')),
+                                        'Please agree to the processing of personal data')),
                               );
                             }
                           },
@@ -216,32 +215,39 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
-  Future<void> _signIn() async{
-    setState((){
-      _isSigning = true;
-    });
 
+  Future<void> _signIn() async {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    try{
+    try {
       User? user = await _auth.signinWithEmailAndPassword(email, password);
 
-      if(user != null){
-        DocumentSnapshot userDoc = await _firestore.collection('user').doc(user.uid).get();
-        if (userDoc.exists){
-          Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await _firestore.collection('user').doc(user.uid).get();
+        if (userDoc.exists) {
+          Map<String, dynamic>? userData =
+              userDoc.data() as Map<String, dynamic>?;
           String? role = userData?['role'];
 
           Fluttertoast.showToast(msg: "User is successfully signed in");
 
           //Navigate to different homepages based on the role
-          if (role == 'betreiber'){
+          if (role == 'betreiber') {
             Fluttertoast.showToast(msg: "Navigate to betreiber homepage");
-          } else if (role == 'kunde'){
+          } else if (role == 'kunde') {
             Fluttertoast.showToast(msg: "Navigate to kunde homepage");
-          } else if (role == 'techniker'){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const KundeHome()),
+            );
+          } else if (role == 'techniker') {
             Fluttertoast.showToast(msg: "Navigate to techniker homepage");
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const TechnikerHome()),
+            );
           } else {
             Fluttertoast.showToast(msg: 'Unknown role');
           }
@@ -251,20 +257,15 @@ class _SignInScreenState extends State<SignInScreen> {
       } else {
         Fluttertoast.showToast(msg: "Sign in failed");
       }
-
-    }catch (e) {
+    } catch (e) {
       Fluttertoast.showToast(msg: "Error: ${e.toString()}");
-    }finally{
-      setState(() {
-        _isSigning = false;
-      });
     }
 
     User? user = await _auth.signinWithEmailAndPassword(email, password);
 
-    if(user != null){
+    if (user != null) {
       Fluttertoast.showToast(msg: "User is succesfully signed in");
-    }else{
+    } else {
       Fluttertoast.showToast(msg: "Wrong email or password");
     }
   }
