@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hci_hda_chiu_suharta/page/sign_in_screen.dart';
-import 'package:hci_hda_chiu_suharta/page/sign_up_page.dart';
+import 'package:hci_hda_chiu_suharta/page/login/sign_in_page.dart';
+import 'package:hci_hda_chiu_suharta/page/login/sign_up_page.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 import 'package:hci_hda_chiu_suharta/widgets/welcome_button.dart';

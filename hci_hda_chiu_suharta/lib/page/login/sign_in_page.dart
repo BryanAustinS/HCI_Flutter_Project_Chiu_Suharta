@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
-import 'package:hci_hda_chiu_suharta/page/kunde_home.dart';
-import 'package:hci_hda_chiu_suharta/page/sign_up_page.dart';
-import 'package:hci_hda_chiu_suharta/page/techniker_home.dart';
+import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
+import 'package:hci_hda_chiu_suharta/page/login/sign_up_page.dart';
+import 'package:hci_hda_chiu_suharta/page/home/techniker_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../profile/profile_page.dart';
+
 class KundeHome extends StatefulWidget {
   const KundeHome({super.key});
 
@@ -32,9 +34,13 @@ class _KundeHomeState extends State<KundeHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
-              //Navigate to logout page
+              //Navigate to profile page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
             },
             color: bgColor,
           ),
