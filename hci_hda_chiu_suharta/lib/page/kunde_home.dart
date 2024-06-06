@@ -40,12 +40,12 @@ class _KundeHomeState extends State<KundeHome> {
           ),
         ],
       ),
-      
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, 
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Reparatur buchen
               SizedBox(
@@ -65,11 +65,11 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.construction, 
+                          Icons.construction,
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
@@ -88,7 +88,7 @@ class _KundeHomeState extends State<KundeHome> {
                   ),
                 ),
               ),
-              SizedBox(height: 20), 
+              SizedBox(height: 20),
               // Antrag verfolgen
               SizedBox(
                 height: 275,
@@ -107,11 +107,11 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.timeline, 
+                          Icons.timeline,
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(

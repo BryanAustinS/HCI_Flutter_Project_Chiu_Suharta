@@ -238,15 +238,17 @@ class _SignInScreenState extends State<SignInScreen> {
             Fluttertoast.showToast(msg: "Navigate to betreiber homepage");
           } else if (role == 'kunde') {
             Fluttertoast.showToast(msg: "Navigate to kunde homepage");
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const KundeHome()),
+                (Route<dynamic> route) => false,
             );
           } else if (role == 'techniker') {
             Fluttertoast.showToast(msg: "Navigate to techniker homepage");
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const TechnikerHome()),
+                (Route<dynamic> route) => false,
             );
           } else {
             Fluttertoast.showToast(msg: 'Unknown role');
