@@ -21,7 +21,7 @@ class _KundeHomeState extends State<KundeHome> {
         title: Text(
           'FAHRRARZT',
           style: TextStyle(
-            fontSize: 48,
+            fontSize: 32,
             fontWeight: FontWeight.bold,
             fontFamily: 'Montserrat',
             letterSpacing: 2.0,
