@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/page/login/welcome_screen.dart';
 import 'package:ionicons/ionicons.dart';
+
+import '../../localization/locales.dart';
 
 class ProfilePage extends StatefulWidget {
   final Image profilePicture;
@@ -13,6 +16,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late FlutterLocalization _flutterLocalization;
+  late String _currentLanguageCode;
+
+  @override
+  void initState() {
+    super.initState();
+    _flutterLocalization = FlutterLocalization.instance;
+    _currentLanguageCode = _flutterLocalization.currentLocale!.languageCode;
+    print(_currentLanguageCode);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Settings",
+              LocaleData.settings.getString(context),
               style: TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
@@ -48,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 40),
             Text(
-              "Account",
+              LocaleData.account.getString(context),
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
@@ -90,10 +103,47 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 40),
             Text(
-              "Settings",
+              LocaleData.settings.getString(context),
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.blue.shade100,
+                    ),
+                    child: Icon(
+                      Ionicons.language_outline,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  DropdownButton(
+                    value: _currentLanguageCode,
+                    items: const [
+                      DropdownMenuItem(
+                        child: Text("English"),
+                        value: "en",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("Deutsch"),
+                        value: "de",
+                      ),
+                    ],
+                    onChanged: (value){
+                      _setLocale(value);
+                    }
+                  )
+                ]
               ),
             ),
             const SizedBox(height: 20),
@@ -125,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     },
                     child: Text(
-                      "Log out",
+                      LocaleData.logout.getString(context),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -139,5 +189,16 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+  void _setLocale(String? value) {
+    if (value == null) return;
+    if (value == "en") {
+      _flutterLocalization.translate("en");
+    } else if (value == "de") {
+      _flutterLocalization.translate("de");
+    }
+    setState(() {
+      _currentLanguageCode = value;
+    });
   }
 }

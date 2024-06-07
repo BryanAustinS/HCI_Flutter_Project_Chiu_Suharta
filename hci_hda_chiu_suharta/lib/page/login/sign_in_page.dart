@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
 import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
@@ -8,6 +9,8 @@ import 'package:hci_hda_chiu_suharta/page/login/sign_up_page.dart';
 import 'package:hci_hda_chiu_suharta/page/home/techniker_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
+
+import '../../localization/locales.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -59,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Welcome Back!',
+                        LocaleData.welcome_back.getString(context),
                         style: TextStyle(
                           fontSize: 30.0,
                           fontWeight: FontWeight.w900,
@@ -80,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         decoration: InputDecoration(
                           label: const Text('Email'),
-                          hintText: 'Enter Email',
+                          hintText: LocaleData.enter_email.getString(context),
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
@@ -109,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         decoration: InputDecoration(
                           label: const Text('Password'),
-                          hintText: 'Enter Password',
+                          hintText: LocaleData.enter_password.getString(context),
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
@@ -138,8 +141,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 },
                                 activeColor: lightColorScheme.primary,
                               ),
-                              const Text(
-                                'agree to processing data',
+                              Text(
+                                LocaleData.agree_terms.getString(context),
                                 style: TextStyle(
                                   color: Colors.black45,
                                 ),
@@ -158,8 +161,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             if (_formSignInKey.currentState!.validate() &&
                                 agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Processing Data'),
+                                SnackBar(
+                                  content: Text(LocaleData.processing_data.getString(context)),
                                 ),
                               );
                               await _signIn();
@@ -171,7 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
                             }
                           },
-                          child: const Text('Sign in'),
+                          child: Text(LocaleData.sign_in.getString(context)),
                         ),
                       ),
                       const SizedBox(
@@ -180,8 +183,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Don\'t have an account?',
+                          Text(
+                            LocaleData.no_account.getString(context),
                             style: TextStyle(
                               color: Colors.black45,
                             ),
@@ -196,7 +199,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
                             },
                             child: Text(
-                              ' Sign up',
+                              " " + LocaleData.sign_up.getString(context),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: lightColorScheme.primary,

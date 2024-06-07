@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
 import 'package:hci_hda_chiu_suharta/page/login/sign_in_page.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 import 'package:logger/logger.dart';
+
+import '../../localization/locales.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -64,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Get Started',
+                      LocaleData.get_started.getString(context),
                       style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.w900,
@@ -84,8 +87,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        label: const Text('Full Name'),
-                        hintText: 'Enter Full Name',
+                        label: Text(LocaleData.full_name.getString(context)),
+                        hintText: LocaleData.enter_full_name.getString(context),
                         hintStyle: const TextStyle(
                           color: Colors.black26,
                         ),
@@ -105,13 +108,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter Email';
+                          return LocaleData.enter_email.getString(context);
                         }
                         return null;
                       },
                       decoration: InputDecoration(
                         label: const Text('Email'),
-                        hintText: 'Enter Email',
+                        hintText: 'LocaleData.enter_email.getString(context)',
                         hintStyle: const TextStyle(
                           color: Colors.black26,
                         ),
@@ -139,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       obscuringCharacter: '*',
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter password';
+                          return LocaleData.enter_password.getString(context);
                         }
                         return null;
                       },
@@ -147,7 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         label: const Text(
                           'Password',
                         ),
-                        hintText: 'Enter Password',
+                        hintText: LocaleData.enter_password.getString(context),
                         hintStyle: const TextStyle(
                           color: Colors.black26,
                         ),
@@ -180,17 +183,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                           activeColor: lightColorScheme.primary,
                         ),
-                        const Text(
-                          'I agree to the processing of ',
-                          style: TextStyle(
-                            color: Colors.black45,
-                          ),
-                        ),
-                        Text(
-                          'Personal data',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: lightColorScheme.primary,
+                        Flexible(
+                          child: Text(
+                            LocaleData.agree_personal_data.getString(context),
+                            style: TextStyle(
+                              color: Colors.black45,
+                            ),
                           ),
                         ),
                       ],
@@ -206,8 +204,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (_formSignUpKey.currentState!.validate() &&
                               agreePersonalData) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Processing Data'),
+                              SnackBar(
+                                content: Text(LocaleData.processing_data.getString(context)),
                               ),
                             );
                             await _signUp();
@@ -221,7 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           }
                         },
-                        child: const Text('Sign up'),
+                        child: Text(LocaleData.sign_up.getString(context)),
                       ),
                     ),
                     const SizedBox(
@@ -231,8 +229,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Already have an account? ',
+                        Text(
+                          LocaleData.have_account.getString(context) + ' ',
                           style: TextStyle(
                             color: Colors.black45,
                           ),
@@ -247,7 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           },
                           child: Text(
-                            'Sign in',
+                            LocaleData.sign_in.getString(context),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: lightColorScheme.primary,

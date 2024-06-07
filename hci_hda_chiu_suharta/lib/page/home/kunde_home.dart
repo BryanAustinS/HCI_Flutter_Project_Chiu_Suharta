@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hci_hda_chiu_suharta/localization/locales.dart';
 import 'package:logger/logger.dart';
-import 'package:hci_hda_chiu_suharta/globals.dart';
 
 import '../profile/profile_page.dart';
 
@@ -18,7 +19,6 @@ class _KundeHomeState extends State<KundeHome> {
     Color bgColor = Colors.white;
     const Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
     var logger = Logger();
-
     return Scaffold(
       // App Bar
       backgroundColor: bgColor,
@@ -90,7 +90,7 @@ class _KundeHomeState extends State<KundeHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Reparatur buchen',
+                              LocaleData.kunde_button1.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
@@ -132,7 +132,7 @@ class _KundeHomeState extends State<KundeHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Antrag verfolgen',
+                              LocaleData.kunde_button2.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
