@@ -125,8 +125,7 @@ return Container(
 
 Widget _buildZubehoerList() {
   Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
-
-return Container(
+  return Container(
     color: lightColorScheme.background,
     child: ListView.builder(
       itemCount: 4,
@@ -392,15 +391,30 @@ Widget _buildSubtotal() {
 Widget _buildConfirmButton() {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
-      backgroundColor: primaryColor,
+      backgroundColor: _komponenteChecked.any((checked) => checked) ||
+          _zubehoerChecked.any((checked) => checked)
+          ? primaryColor
+          : Colors.grey, 
     ),
-    onPressed: () {
-      //Confirm reparatur and back to home menu
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: ((context) => KundeHome())),
-      );
-    },
+    onPressed: _komponenteChecked.any((checked) => checked) ||
+            _zubehoerChecked.any((checked) => checked)
+        ? () {
+            // TO DO: Create the buchung instance here
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Reparatur erfolgreich gebucht'),
+              ),
+            );
+
+            Future.delayed(const Duration(seconds: 0), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => KundeHome()),
+              );
+            });
+          }
+        : null,
     child: Text(
       'Confirm',
       style: TextStyle(
@@ -412,6 +426,13 @@ Widget _buildConfirmButton() {
   );
 }
 
+Widget snackBar(String message){
+  return SnackBar(
+    content: Text(message),
+    duration: Duration(seconds : 2),
+    behavior: SnackBarBehavior.floating,
+  );
+}
 }
 
 
