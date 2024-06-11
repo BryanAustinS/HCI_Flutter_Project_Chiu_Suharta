@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:hci_hda_chiu_suharta/page/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
+import 'package:provider/provider.dart';
+
 
 Color primaryColor = lightColorScheme.primary;
 Color bgColor = lightColorScheme.background;
 Color unselectedLabelColor = Color(0xff5f6368);
-
 
 class ReparaturBuchen extends StatefulWidget {
   ReparaturBuchen({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class ReparaturBuchen extends StatefulWidget {
 }
 
 class _ReparaturBuchenState extends State<ReparaturBuchen> with SingleTickerProviderStateMixin {
+  
   late TabController _tabController;
 
   final _tabs = [
@@ -24,7 +26,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen> with SingleTickerProv
   ];
 
   List<bool> _komponenteChecked = List.generate(5, (_) => false);
-  List<bool> _zubehoerChecked = List.generate(3, (_) => false);
+  List<bool> _zubehoerChecked = List.generate(9, (_) => false);
 
   @override
   void initState() {
@@ -86,18 +88,32 @@ class _ReparaturBuchenState extends State<ReparaturBuchen> with SingleTickerProv
   }
 
 Widget _buildKomponenteList() {
-  return Container(
+  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+
+return Container(
     color: lightColorScheme.background,
     child: ListView.builder(
       itemCount: 5,
       itemBuilder: (context, index) {
+        final warehouse = fahrrarzt.warehouse;
+        if (warehouse == null) {
+          return ListTile(
+            title: Text('No data available'),
+          );
+        }
+        final sparepart = warehouse.keys.elementAt(index);
         return Column(
           children: [
             ListTile(
-              title: Text(_getKomponenteItemText(index)),
+              title: Row(
+                children: [
+                  Expanded(child: Text(sparepart.name!)),
+                  Text('\$${sparepart.sellPrice!.toStringAsFixed(2)}'),
+                ],
+              ),
               trailing: _buildKomponenteTrailing(index),
             ),
-            if(_komponenteChecked[index])
+            if (_komponenteChecked[index])
               _buildToggleWidget(index),
             Divider(height: 1, color: Colors.grey), // Divider between items
           ],
@@ -108,47 +124,39 @@ Widget _buildKomponenteList() {
 }
 
 Widget _buildZubehoerList() {
-    return Container(
-      color: lightColorScheme.background,
-      child: ListView.builder(
-        itemCount: _zubehoerChecked.length,
-        itemBuilder: (context, index) {
+  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+
+return Container(
+    color: lightColorScheme.background,
+    child: ListView.builder(
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        final warehouse = fahrrarzt.warehouse;
+        if (warehouse == null) {
           return ListTile(
-            title: Text('Zubehör Item $index'),
-            trailing: Checkbox(
-              value: _zubehoerChecked[index],
-              onChanged: (bool? value) {
-                setState(() {
-                  _zubehoerChecked[index] = value!;
-                });
-              },
-            ),
+            title: Text('No data available'),
           );
-        },
-      ),
-    );
-  }
-
-  String _getKomponenteItemText(int index) {
-    switch (index) {
-      case 0:
-        return 'Brakes';
-      case 1:
-        return 'Chains';
-      case 2:
-        return 'Saddle';
-      case 3:
-        return 'Tyres';
-      case 4:
-        return 'Spokes';
-      default:
-        return '';
-    }
-  }
-
-  bool _hasFrontRearOption(int index) {
-    return index == 0 || index == 3 || index == 4;
-  }
+        }
+        final sparepart = warehouse.keys.elementAt(index+5);
+        return Column(
+          children: [
+            ListTile(
+              title: Row(
+                children: [
+                  Expanded(child: Text(sparepart.name!)),
+                  Text('\$${sparepart.sellPrice!.toStringAsFixed(2)}'),
+                ],
+              ),
+              trailing: _buildKomponenteTrailing(index),
+            ),
+            Divider(height: 1, color: Colors.grey), // Divider between items
+          ],
+        );
+      },
+    ),
+  );
+}
+  
 
   Widget _buildKomponenteTrailing(int index) {
     return Checkbox(
@@ -352,7 +360,7 @@ Widget _buildSubtotal() {
   double totalPrice = 0;
 
   //Calculate the total price
-  
+
   
   return Padding(
     padding: const EdgeInsets.all(10),
