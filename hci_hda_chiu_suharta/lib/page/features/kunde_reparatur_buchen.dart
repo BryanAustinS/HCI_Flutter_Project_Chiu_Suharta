@@ -10,7 +10,8 @@ Color bgColor = lightColorScheme.background;
 Color unselectedLabelColor = Color(0xff5f6368);
 
 class ReparaturBuchen extends StatefulWidget {
-  ReparaturBuchen({Key? key}) : super(key: key);
+  final String userId;
+  ReparaturBuchen({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<ReparaturBuchen> createState() => _ReparaturBuchenState();
@@ -462,7 +463,9 @@ Widget _buildConfirmButton() {
             Future.delayed(const Duration(seconds: 0), () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => KundeHome()),
+                MaterialPageRoute(builder: (context) => KundeHome(
+                  userId: widget.userId,
+                )),
               );
             });
           }

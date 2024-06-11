@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
-class TechnikerHome extends StatelessWidget {
-  const TechnikerHome({super.key});
+class BetreiberHome extends StatelessWidget {
+  const BetreiberHome({super.key});
 
   @override
   Widget build(BuildContext context) {
