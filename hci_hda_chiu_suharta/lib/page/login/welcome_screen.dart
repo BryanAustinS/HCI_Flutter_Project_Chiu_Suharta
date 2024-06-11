@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hci_hda_chiu_suharta/page/sign_in_screen.dart';
-import 'package:hci_hda_chiu_suharta/page/sign_up_page.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hci_hda_chiu_suharta/page/login/sign_in_page.dart';
+import 'package:hci_hda_chiu_suharta/page/login/sign_up_page.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 import 'package:hci_hda_chiu_suharta/widgets/welcome_button.dart';
+
+import '../../localization/locales.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -24,9 +26,9 @@ class WelcomeScreen extends StatelessWidget {
                 child: Center(
                   child: RichText(
                     textAlign: TextAlign.center,
-                    text: const TextSpan(children: [
+                    text: TextSpan(children: [
                       TextSpan(
-                          text: 'Welcome to FahrrArzt!\n',
+                          text: LocaleData.welcome_title.getString(context),
                           style: TextStyle(
                             fontSize: 45.0,
                             fontWeight: FontWeight.w600,
@@ -41,9 +43,9 @@ class WelcomeScreen extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: WelcomeButton(
-                      buttonText: 'Sign In',
+                      buttonText: LocaleData.sign_in.getString(context),
                       onTap: SignInScreen(),
                       color: Colors.transparent,
                       textColor: Colors.black,
@@ -51,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: WelcomeButton(
-                      buttonText: 'Sign Up',
+                      buttonText: LocaleData.sign_up.getString(context),
                       onTap: const SignUpScreen(),
                       color: Colors.white,
                       textColor: lightColorScheme.primary,

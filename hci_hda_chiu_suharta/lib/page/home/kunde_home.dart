@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hci_hda_chiu_suharta/localization/locales.dart';
+import 'package:logger/logger.dart';
+
+import '../profile/profile_page.dart';
 
 class KundeHome extends StatefulWidget {
   const KundeHome({super.key});
@@ -12,8 +17,8 @@ class _KundeHomeState extends State<KundeHome> {
   Widget build(BuildContext context) {
     Color primaryColor = Colors.red;
     Color bgColor = Colors.white;
-    Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
-
+    const Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    var logger = Logger();
     return Scaffold(
       // App Bar
       backgroundColor: bgColor,
@@ -32,20 +37,30 @@ class _KundeHomeState extends State<KundeHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: Image.asset('assets/images/avatar_profile.png'),
             onPressed: () {
-              //Navigate to logout page
+              var profilePicture =
+                  Image.asset('assets/images/avatar_profile.png');
+              //Navigate to profile page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    profilePicture: profilePicture,
+                  ),
+                ),
+              );
             },
             color: bgColor,
           ),
         ],
       ),
-      
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, 
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Reparatur buchen
               SizedBox(
@@ -53,7 +68,7 @@ class _KundeHomeState extends State<KundeHome> {
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Reparatur buchen button clicked');
+                    logger.t('Reparatur buchen button clicked');
                     // Navigate to page KundeReparaturBuchen
                   },
                   child: Container(
@@ -65,17 +80,17 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.construction, 
+                          Icons.construction,
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Reparatur buchen',
+                              LocaleData.kunde_button1.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
@@ -88,14 +103,14 @@ class _KundeHomeState extends State<KundeHome> {
                   ),
                 ),
               ),
-              SizedBox(height: 20), 
+              const SizedBox(height: 20),
               // Antrag verfolgen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Antrag verfolgen button clicked');
+                    logger.t('Antrag verfolgen button clicked');
                     // Navigate to page KundeAntragVerfolgen
                   },
                   child: Container(
@@ -107,17 +122,17 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.timeline, 
+                          Icons.timeline,
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Antrag verfolgen',
+                              LocaleData.kunde_button2.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,

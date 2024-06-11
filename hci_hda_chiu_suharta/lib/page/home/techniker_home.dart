@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class TechnikerHome extends StatefulWidget {
   const TechnikerHome({super.key});
@@ -12,7 +13,8 @@ class _TechnikerHomeState extends State<TechnikerHome> {
   Widget build(BuildContext context) {
     Color primaryColor = Colors.red;
     Color bgColor = Colors.white;
-    Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    const Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    var logger = Logger();
 
     return Scaffold(
       // App Bar
@@ -32,7 +34,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
               //Navigate to logout page
             },
@@ -54,7 +56,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Reparaturen ansehen button clicked');
+                    logger.t('Reparaturen ansehen button clicked');
                     // Navigate to page TechnikerReparaturAnsehen
                   },
                   child: Container(
@@ -70,7 +72,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
@@ -89,7 +91,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Auslastung ansehen
               SizedBox(
@@ -97,7 +99,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Auslastung ansehen button clicked');
+                    logger.t('Auslastung ansehen button clicked');
                     // Navigate to page TechnikerAuslastungAnsehen
                   },
                   child: Container(
@@ -113,7 +115,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
