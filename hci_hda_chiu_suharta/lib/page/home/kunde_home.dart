@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hci_hda_chiu_suharta/localization/locales.dart';
+import 'package:logger/logger.dart';
+
+import '../profile/profile_page.dart';
+import 'package:hci_hda_chiu_suharta/page/kunde_reparatur_buchen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
-class TechnikerHome extends StatelessWidget {
-  const TechnikerHome({super.key});
 
+class KundeHome extends StatefulWidget {
+  const KundeHome({super.key});
+
+  @override
+  State<KundeHome> createState() => _KundeHomeState();
+}
+
+class _KundeHomeState extends State<KundeHome> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = lightColorScheme.primary;
     Color bgColor = lightColorScheme.background;
     Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    var logger = Logger();
     return Scaffold(
       // App Bar
       backgroundColor: bgColor,
@@ -18,7 +31,7 @@ class TechnikerHome extends StatelessWidget {
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Poppins',
+            fontFamily: 'Montserrat',
             letterSpacing: 2.0,
             color: bgColor,
           ),
@@ -27,30 +40,43 @@ class TechnikerHome extends StatelessWidget {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: Image.asset('assets/images/avatar_profile.png'),
             onPressed: () {
-              //Navigate to logout page
+              var profilePicture =
+                  Image.asset('assets/images/avatar_profile.png');
+              //Navigate to profile page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    profilePicture: profilePicture,
+                  ),
+                ),
+              );
             },
             color: bgColor,
           ),
         ],
       ),
-      
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              // Reparaturen ansehen
+              // Reparatur buchen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Reparaturen ansehen button clicked');
-                    // Navigate to page TechnikerReparaturAnsehen
+                    logger.t('Reparatur buchen button clicked');
+                    // Navigate to page KundeReparaturBuchen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: ((context) => ReparaturBuchen())),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -61,19 +87,21 @@ class TechnikerHome extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.list_alt, 
+                          Icons.construction,
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Aufträge ansehen',
+                              LocaleData.kunde_button1.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
@@ -84,16 +112,15 @@ class TechnikerHome extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-
-              // Auslastung ansehen
+              const SizedBox(height: 20),
+              // Antrag verfolgen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Ersatzteile ansehen button clicked');
-                    // Navigate to page TechnikerAuslastungAnsehen
+                    logger.t('Auftrag verfolgen button clicked');
+                    // Navigate to page KundeAntragVerfolgen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -104,19 +131,21 @@ class TechnikerHome extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.warehouse, 
+                          Icons.timeline,
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Ersatzteile ansehen',
+                              LocaleData.kunde_button2.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
+                                fontWeight: FontWeight.w200,
+                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),

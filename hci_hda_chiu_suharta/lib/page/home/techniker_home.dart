@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:hci_hda_chiu_suharta/page/kunde_reparatur_buchen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
+import 'package:logger/logger.dart';
 
+class TechnikerHome extends StatelessWidget {
+  const TechnikerHome({super.key});
 
-class KundeHome extends StatefulWidget {
-  const KundeHome({super.key});
-
-  @override
-  State<KundeHome> createState() => _KundeHomeState();
-}
-
-class _KundeHomeState extends State<KundeHome> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = lightColorScheme.primary;
     Color bgColor = lightColorScheme.background;
     Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    var logger = Logger();
 
     return Scaffold(
       // App Bar
@@ -26,7 +21,7 @@ class _KundeHomeState extends State<KundeHome> {
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             letterSpacing: 2.0,
             color: bgColor,
           ),
@@ -35,12 +30,12 @@ class _KundeHomeState extends State<KundeHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
               //Navigate to logout page
             },
             color: bgColor,
-          ), 
+          ),
         ],
       ),
       
@@ -48,19 +43,17 @@ class _KundeHomeState extends State<KundeHome> {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, 
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Reparatur buchen
+
+              // Reparaturen ansehen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Reparatur buchen button clicked');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: ((context) => ReparaturBuchen())),
-                    );
+                    logger.t('Reparaturen ansehen button clicked');
+                    // Navigate to page TechnikerReparaturAnsehen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -71,21 +64,19 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.construction, 
+                          Icons.list_alt, 
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Reparatur buchen',
+                              'Aufträge ansehen',
                               style: TextStyle(
                                 fontSize: 23,
-                                fontWeight: FontWeight.w200,
-                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
@@ -96,15 +87,16 @@ class _KundeHomeState extends State<KundeHome> {
                   ),
                 ),
               ),
-              SizedBox(height: 20), 
-              // Antrag verfolgen
+              const SizedBox(height: 20),
+
+              // Auslastung ansehen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    print('Auftrag verfolgen button clicked');
-                    // Navigate to page KundeAntragVerfolgen
+                    logger.t('Ersatzteile ansehen button clicked');
+                    // Navigate to page TechnikerAuslastungAnsehen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -115,21 +107,19 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.timeline, 
+                          Icons.warehouse, 
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        SizedBox(height: 10), 
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Auftrag verfolgen',
+                              'Ersatzteile ansehen',
                               style: TextStyle(
                                 fontSize: 23,
-                                fontWeight: FontWeight.w200,
-                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
