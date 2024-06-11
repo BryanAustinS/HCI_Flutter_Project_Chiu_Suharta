@@ -4,7 +4,7 @@ import 'package:hci_hda_chiu_suharta/localization/locales.dart';
 import 'package:logger/logger.dart';
 
 import '../profile/profile_page.dart';
-import 'package:hci_hda_chiu_suharta/page/kunde_reparatur_buchen.dart';
+import 'package:hci_hda_chiu_suharta/page/features/kunde_reparatur_buchen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
 

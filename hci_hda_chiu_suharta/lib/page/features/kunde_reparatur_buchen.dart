@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
-import 'package:hci_hda_chiu_suharta/page/kunde_home.dart';
+import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -451,7 +451,7 @@ Widget _buildConfirmButton() {
     onPressed: _komponenteChecked.any((checked) => checked) ||
             _zubehoerChecked.any((checked) => checked)
         ? () {
-            // TO DO: Create the buchung instance here
+            // TODO: Create the buchung instance here
 
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
