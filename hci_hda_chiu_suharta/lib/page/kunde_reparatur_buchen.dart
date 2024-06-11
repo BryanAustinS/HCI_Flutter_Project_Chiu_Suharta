@@ -123,7 +123,7 @@ return Container(
   );
 }
 
-Widget _buildZubehoerList() {
+  Widget _buildZubehoerList() {
   Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
   return Container(
     color: lightColorScheme.background,
@@ -155,6 +155,7 @@ Widget _buildZubehoerList() {
     ),
   );
 }
+  
   Widget _buildZubehoerTrailing(index){
     return Checkbox(
       value: _zubehoerChecked[index],
@@ -165,7 +166,7 @@ Widget _buildZubehoerList() {
       }
     );
   }
-
+  
   Widget _buildKomponenteTrailing(int index) {
     return Checkbox(
       value: _komponenteChecked[index],
@@ -365,11 +366,62 @@ Widget _spokeFrontRearToggle() {
   }
 
 Widget _buildSubtotal() {
-  double totalPrice = 0;
+  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+  final warehouse = fahrrarzt.warehouse;
 
-  //Calculate the total price
+  int totalPrice = 0;
 
-  
+  //Calculate Komponente prices
+  for (int i = 0;  i < _komponenteChecked.length; i++){
+    if (warehouse == null){ break; }
+    if (_komponenteChecked[i] == true){
+        if (i == 0 || i == 3 || i == 4){
+          switch (i){
+            case 0:
+              if (frontBrake) {
+                var sparepart = warehouse.keys.elementAt(i);
+                totalPrice += sparepart.sellPrice!;
+                }
+              if (rearBrake){
+                var sparepart = warehouse.keys.elementAt(i);
+                totalPrice += sparepart.sellPrice!;
+              }  
+              case 3:
+                if (frontTyre) {
+                var sparepart = warehouse.keys.elementAt(i);
+                totalPrice += sparepart.sellPrice!;
+                }
+              if (rearTyre){
+                var sparepart = warehouse.keys.elementAt(i);
+                totalPrice += sparepart.sellPrice!;
+              }
+              case 4:
+              if (frontSpoke) {
+                var sparepart = warehouse.keys.elementAt(i);
+                totalPrice += sparepart.sellPrice!;
+                }
+              if (rearSpoke){
+                var sparepart = warehouse.keys.elementAt(i);
+                totalPrice += sparepart.sellPrice!;
+              }
+          }
+        } else {
+          var sparepart = warehouse.keys.elementAt(i);
+          totalPrice += sparepart.sellPrice!;
+        }
+    } 
+  }
+
+  //Calculate zubehoer prices
+  for (int i = 0;  i < _zubehoerChecked.length; i++){
+    if (warehouse == null){ break; }
+    if (_zubehoerChecked[i] == true){
+      int realIndex = i+4;
+      var sparepart = warehouse.keys.elementAt(realIndex);
+      totalPrice += sparepart.sellPrice!;
+    } 
+  }
+
   return Padding(
     padding: const EdgeInsets.all(10),
     child: Row(
