@@ -147,7 +147,7 @@ return Container(
                   Text('\$${sparepart.sellPrice!.toStringAsFixed(2)}'),
                 ],
               ),
-              trailing: _buildKomponenteTrailing(index),
+              trailing: _buildZubehoerTrailing(index),
             ),
             Divider(height: 1, color: Colors.grey), // Divider between items
           ],
@@ -156,7 +156,16 @@ return Container(
     ),
   );
 }
-  
+  Widget _buildZubehoerTrailing(index){
+    return Checkbox(
+      value: _zubehoerChecked[index],
+      onChanged: (bool? value){
+        setState(() {
+        _zubehoerChecked[index] = value!;
+        });
+      }
+    );
+  }
 
   Widget _buildKomponenteTrailing(int index) {
     return Checkbox(
