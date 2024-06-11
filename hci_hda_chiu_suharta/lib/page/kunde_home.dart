@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/page/reparatur_buchen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
 
@@ -39,7 +40,7 @@ class _KundeHomeState extends State<KundeHome> {
               //Navigate to logout page
             },
             color: bgColor,
-          ),
+          ), 
         ],
       ),
       
@@ -56,7 +57,10 @@ class _KundeHomeState extends State<KundeHome> {
                 child: InkWell(
                   onTap: () {
                     print('Reparatur buchen button clicked');
-                    // Navigate to page KundeReparaturBuchen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: ((context) => ReparaturBuchen())),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
