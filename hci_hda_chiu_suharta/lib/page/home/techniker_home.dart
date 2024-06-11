@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
 
-class TechnikerHome extends StatefulWidget {
+class TechnikerHome extends StatelessWidget {
   const TechnikerHome({super.key});
 
   @override
-  State<TechnikerHome> createState() => _TechnikerHomeState();
-}
-
-class _TechnikerHomeState extends State<TechnikerHome> {
-  @override
   Widget build(BuildContext context) {
-    Color primaryColor = Colors.red;
-    Color bgColor = Colors.white;
-    const Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    Color primaryColor = lightColorScheme.primary;
+    Color bgColor = lightColorScheme.background;
+    Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
     var logger = Logger();
 
     return Scaffold(
@@ -23,7 +19,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
         title: Text(
           'FAHRRARZT',
           style: TextStyle(
-            fontSize: 36,
+            fontSize: 32,
             fontWeight: FontWeight.bold,
             fontFamily: 'Poppins',
             letterSpacing: 2.0,
@@ -78,7 +74,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Reparaturen ansehen',
+                              'Aufträge ansehen',
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
@@ -99,7 +95,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    logger.t('Auslastung ansehen button clicked');
+                    logger.t('Ersatzteile ansehen button clicked');
                     // Navigate to page TechnikerAuslastungAnsehen
                   },
                   child: Container(
@@ -121,7 +117,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Auslastung ansehen',
+                              'Ersatzteile ansehen',
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,

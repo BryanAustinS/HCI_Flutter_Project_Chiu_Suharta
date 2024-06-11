@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
-import 'package:hci_hda_chiu_suharta/localization/locales.dart';
-import 'package:logger/logger.dart';
-
-import '../profile/profile_page.dart';
-import 'package:hci_hda_chiu_suharta/page/kunde_reparatur_buchen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
+class TechnikerHome extends StatelessWidget {
+  const TechnikerHome({super.key});
 
-class KundeHome extends StatefulWidget {
-  const KundeHome({super.key});
-
-  @override
-  State<KundeHome> createState() => _KundeHomeState();
-}
-
-class _KundeHomeState extends State<KundeHome> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = lightColorScheme.primary;
     Color bgColor = lightColorScheme.background;
     Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
-    var logger = Logger();
     return Scaffold(
       // App Bar
       backgroundColor: bgColor,
@@ -31,7 +18,7 @@ class _KundeHomeState extends State<KundeHome> {
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             letterSpacing: 2.0,
             color: bgColor,
           ),
@@ -40,43 +27,30 @@ class _KundeHomeState extends State<KundeHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Image.asset('assets/images/avatar_profile.png'),
+            icon: Icon(Icons.account_circle),
             onPressed: () {
-              var profilePicture =
-                  Image.asset('assets/images/avatar_profile.png');
-              //Navigate to profile page
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                    profilePicture: profilePicture,
-                  ),
-                ),
-              );
+              //Navigate to logout page
             },
             color: bgColor,
           ),
         ],
       ),
-
+      
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Reparatur buchen
+
+              // Einnahme verfolgen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    logger.t('Reparatur buchen button clicked');
-                    // Navigate to page KundeReparaturBuchen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: ((context) => ReparaturBuchen())),
-                    );
+                    print('Einnahme verfolgen pressed');
+                    // Navigate to page EinnahmeVerfolgen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -87,21 +61,19 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.construction,
+                          Icons.list_alt, 
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10), 
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              LocaleData.kunde_button1.getString(context),
+                              'Einnahme verfolgen',
                               style: TextStyle(
                                 fontSize: 23,
-                                fontWeight: FontWeight.w200,
-                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
@@ -112,15 +84,16 @@ class _KundeHomeState extends State<KundeHome> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              // Antrag verfolgen
+              SizedBox(height: 20),
+
+              // Ersatzteile ansehen
               SizedBox(
                 height: 275,
                 width: 275,
                 child: InkWell(
                   onTap: () {
-                    logger.t('Auftrag verfolgen button clicked');
-                    // Navigate to page KundeAntragVerfolgen
+                    print('Ersatzteile verfolgen button pressed');
+                    // Navigate to page BetreiberAuslastungVerfolgen
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -131,21 +104,19 @@ class _KundeHomeState extends State<KundeHome> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.timeline,
+                          Icons.warehouse, 
                           color: primaryColor,
                           size: 100.0,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10), 
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              LocaleData.kunde_button2.getString(context),
+                              'Ersatzteile verfolgen',
                               style: TextStyle(
                                 fontSize: 23,
-                                fontWeight: FontWeight.w200,
-                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
