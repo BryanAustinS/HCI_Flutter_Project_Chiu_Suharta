@@ -9,7 +9,8 @@ import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
 
 class KundeHome extends StatefulWidget {
-  const KundeHome({super.key});
+  final String userId;
+  const KundeHome({super.key, required this.userId});
 
   @override
   State<KundeHome> createState() => _KundeHomeState();
@@ -44,12 +45,14 @@ class _KundeHomeState extends State<KundeHome> {
             onPressed: () {
               var profilePicture =
                   Image.asset('assets/images/avatar_profile.png');
+              logger.t('Profile button clicked with ' + widget.userId + ' as userId');
               //Navigate to profile page
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProfilePage(
                     profilePicture: profilePicture,
+                    userId: widget.userId,
                   ),
                 ),
               );
@@ -75,7 +78,9 @@ class _KundeHomeState extends State<KundeHome> {
                     // Navigate to page KundeReparaturBuchen
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: ((context) => ReparaturBuchen())),
+                      MaterialPageRoute(builder: ((context) => ReparaturBuchen(
+                        userId: widget.userId,
+                      ))),
                     );
                   },
                   child: Container(

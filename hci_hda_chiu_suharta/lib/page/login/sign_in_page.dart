@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hci_hda_chiu_suharta/authentication/firebase_user_auth.dart';
+import 'package:hci_hda_chiu_suharta/page/home/betreiber_home.dart';
 import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/page/login/sign_up_page.dart';
 import 'package:hci_hda_chiu_suharta/page/home/techniker_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
+import 'package:logger/logger.dart';
 
 import '../../localization/locales.dart';
 
@@ -26,6 +28,8 @@ class _SignInScreenState extends State<SignInScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  var logger = Logger();
+
 
   @override
   void dispose() {
@@ -237,17 +241,25 @@ class _SignInScreenState extends State<SignInScreen> {
           Fluttertoast.showToast(msg: "User is successfully signed in");
 
           //Navigate to different homepages based on the role
-          if (role == 'betreiber') {
+          if (role == 'Betreiber') {
             Fluttertoast.showToast(msg: "Navigate to betreiber homepage");
-          } else if (role == 'kunde') {
-            Fluttertoast.showToast(msg: "Navigate to kunde homepage");
+            logger.t('User is successfully signed in with ' + user.uid);
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const KundeHome()),
+              MaterialPageRoute(builder: (context) => const BetreiberHome()),
                 (Route<dynamic> route) => false,
             );
-          } else if (role == 'techniker') {
+          } else if (role == 'Kunde') {
+            Fluttertoast.showToast(msg: "Navigate to kunde homepage");
+            logger.t('User is successfully signed in with ' + user.uid);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => KundeHome(userId: user.uid)),
+                (Route<dynamic> route) => false,
+            );
+          } else if (role == 'Techniker') {
             Fluttertoast.showToast(msg: "Navigate to techniker homepage");
+            logger.t('User is successfully signed in with ' + user.uid);
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const TechnikerHome()),
