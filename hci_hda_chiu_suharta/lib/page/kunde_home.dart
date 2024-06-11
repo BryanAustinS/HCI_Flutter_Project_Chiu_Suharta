@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hci_hda_chiu_suharta/page/reparatur_buchen.dart';
+import 'package:hci_hda_chiu_suharta/page/kunde_reparatur_buchen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
 

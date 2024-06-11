@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:hci_hda_chiu_suharta/page/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
 Color primaryColor = lightColorScheme.primary;
 Color bgColor = lightColorScheme.background;
 Color unselectedLabelColor = Color(0xff5f6368);
+
 
 class ReparaturBuchen extends StatefulWidget {
   ReparaturBuchen({Key? key}) : super(key: key);
@@ -348,6 +350,10 @@ Widget _spokeFrontRearToggle() {
 
 Widget _buildSubtotal() {
   double totalPrice = 0;
+
+  //Calculate the total price
+  
+  
   return Padding(
     padding: const EdgeInsets.all(10),
     child: Row(

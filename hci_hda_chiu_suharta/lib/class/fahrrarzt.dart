@@ -59,3 +59,17 @@ class Fahrrarzt {
     ): 10,
   };
 }
+
+class FahrrarztProvider {
+  static final FahrrarztProvider _instance = FahrrarztProvider._internal();
+
+  factory FahrrarztProvider() {
+    return _instance;
+  }
+
+  FahrrarztProvider._internal();
+
+  Fahrrarzt _fahrrarzt = Fahrrarzt();
+
+  Fahrrarzt get fahrrarzt => _fahrrarzt;
+}
