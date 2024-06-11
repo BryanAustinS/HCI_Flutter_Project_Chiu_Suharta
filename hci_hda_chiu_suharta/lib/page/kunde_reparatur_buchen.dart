@@ -26,7 +26,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen> with SingleTickerProv
   ];
 
   List<bool> _komponenteChecked = List.generate(5, (_) => false);
-  List<bool> _zubehoerChecked = List.generate(9, (_) => false);
+  List<bool> _zubehoerChecked = List.generate(4, (_) => false);
 
   @override
   void initState() {
