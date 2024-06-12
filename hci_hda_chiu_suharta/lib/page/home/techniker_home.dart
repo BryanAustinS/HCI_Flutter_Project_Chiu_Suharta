@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
 
-class TechnikerHome extends StatelessWidget {
+class TechnikerHome extends StatefulWidget {
   const TechnikerHome({super.key});
 
+  @override
+  State<TechnikerHome> createState() => _TechnikerHomeState();
+}
+
+class _TechnikerHomeState extends State<TechnikerHome> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = lightColorScheme.primary;
@@ -38,7 +43,7 @@ class TechnikerHome extends StatelessWidget {
           ),
         ],
       ),
-      
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -64,7 +69,7 @@ class TechnikerHome extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.list_alt, 
+                          Icons.list_alt,
                           color: primaryColor,
                           size: 100.0,
                         ),
@@ -107,7 +112,7 @@ class TechnikerHome extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.warehouse, 
+                          Icons.warehouse,
                           color: primaryColor,
                           size: 100.0,
                         ),
