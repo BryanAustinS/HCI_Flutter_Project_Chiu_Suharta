@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
+import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolgen.dart';
 
-class TechnikerHome extends StatelessWidget {
-  const TechnikerHome({super.key});
+class TechnikerHome extends StatefulWidget {
+    final String userId;
+
+  const TechnikerHome({super.key, required this.userId});
+
+  @override
+  State<TechnikerHome> createState() => _TechnikerHomeState();
+}
+
+class _TechnikerHomeState extends State<TechnikerHome> {
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +106,13 @@ class TechnikerHome extends StatelessWidget {
                   onTap: () {
                     logger.t('Ersatzteile ansehen button clicked');
                     // Navigate to page TechnikerAuslastungAnsehen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: ((context) => AuslastungVerfolgen(
+                        userId: widget.userId,
+                      )))
+                      );
+
                   },
                   child: Container(
                     decoration: BoxDecoration(

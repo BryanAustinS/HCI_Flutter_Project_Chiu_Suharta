@@ -481,13 +481,7 @@ Widget _buildConfirmButton() {
   );
 }
 
-Widget snackBar(String message){
-  return SnackBar(
-    content: Text(message),
-    duration: Duration(seconds : 2),
-    behavior: SnackBarBehavior.floating,
-  );
-}
+
 }
 
 

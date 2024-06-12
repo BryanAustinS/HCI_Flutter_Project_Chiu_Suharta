@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolgen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
-class BetreiberHome extends StatelessWidget {
-  const BetreiberHome({super.key});
+class BetreiberHome extends StatefulWidget {
+  final String userId;
+  const BetreiberHome({super.key, required this.userId});
+
+  @override
+  State<BetreiberHome> createState() => _BetreiberHomeState();
+}
+
+class _BetreiberHomeState extends State<BetreiberHome> {
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,7 @@ class BetreiberHome extends StatelessWidget {
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Poppins',
+            fontFamily: 'Montserrat',
             letterSpacing: 2.0,
             color: bgColor,
           ),
@@ -75,6 +83,7 @@ class BetreiberHome extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
+                                fontFamily: 'Poppins'
                               ),
                             ),
                           ),
@@ -94,6 +103,12 @@ class BetreiberHome extends StatelessWidget {
                   onTap: () {
                     print('Ersatzteile verfolgen button pressed');
                     // Navigate to page BetreiberAuslastungVerfolgen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: ((context) => AuslastungVerfolgen(
+                        userId: widget.userId,
+                      )))
+                      );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -118,6 +133,8 @@ class BetreiberHome extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
+                                fontFamily: 'Poppins'
+
                               ),
                             ),
                           ),
