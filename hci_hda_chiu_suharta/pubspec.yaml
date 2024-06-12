@@ -45,3 +45,16 @@ flutter:
       fonts:
         - asset: assets/fonts/Montserrat-BlackItalic.ttf
 
+    - family : InterRegular
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+
+    - family : InterBold
+      fonts:
+        - asset: assets/fonts/Inter-SemiBold.ttf
+
+    - family : PoppinsBold
+      fonts:
+        - asset: assets/fonts/Poppins-Bold.ttf
+
+

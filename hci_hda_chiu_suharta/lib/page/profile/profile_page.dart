@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hci_hda_chiu_suharta/page/home/betreiber_home.dart';
 import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/page/login/welcome_screen.dart';
 import 'package:ionicons/ionicons.dart';
@@ -7,12 +8,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 
 import '../../localization/locales.dart';
+import '../home/techniker_home.dart';
 
 class ProfilePage extends StatefulWidget {
   final Image profilePicture;
   final String userId;
 
-  const ProfilePage({Key? key, required this.profilePicture, required this.userId}) : super(key: key);
+  const ProfilePage(
+      {Key? key, required this.profilePicture, required this.userId})
+      : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -31,21 +35,37 @@ class _ProfilePageState extends State<ProfilePage> {
     _currentLanguageCode = _flutterLocalization.currentLocale!.languageCode;
     print(_currentLanguageCode);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
+          onPressed: () async {
+            String role = await getRole(widget.userId);
+            if (role == 'Kunde') {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => KundeHome(userId: widget.userId),
                 ),
               );
+            } else if (role == 'Techniker') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TechnikerHome(userId: widget.userId),
+                ),
+              );
+            } else if (role == 'Betreiber') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BetreiberHome(),
+                ),
+              );
+            } else {
+              logger.e('Role not found');
             }
           },
           icon: const Icon(Ionicons.chevron_back_outline),
@@ -88,8 +108,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       FutureBuilder<String>(
                         future: getUserName(widget.userId),
-                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           }
                           if (snapshot.hasError) {
@@ -107,8 +129,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 10),
                       FutureBuilder<String>(
                         future: getRole(widget.userId),
-                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           }
                           if (snapshot.hasError) {
@@ -139,22 +163,21 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 20),
             Container(
               width: double.infinity,
-              child: Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue.shade100,
-                    ),
-                    child: Icon(
-                      Ionicons.language_outline,
-                      color: Colors.blue,
-                    ),
+              child: Row(children: [
+                Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue.shade100,
                   ),
-                  const SizedBox(width: 20),
-                  DropdownButton(
+                  child: Icon(
+                    Ionicons.language_outline,
+                    color: Colors.blue,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                DropdownButton(
                     value: _currentLanguageCode,
                     items: const [
                       DropdownMenuItem(
@@ -166,12 +189,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         value: "de",
                       ),
                     ],
-                    onChanged: (value){
+                    onChanged: (value) {
                       _setLocale(value);
-                    }
-                  )
-                ]
-              ),
+                    })
+              ]),
             ),
             const SizedBox(height: 20),
             Container(
@@ -217,6 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
   void _setLocale(String? value) {
     if (value == null) return;
     if (value == "en") {
@@ -232,13 +254,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<String> getUserName(String userId) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    DocumentSnapshot documentSnapshot = await firestore.collection('user').doc(userId).get();
+    DocumentSnapshot documentSnapshot =
+        await firestore.collection('user').doc(userId).get();
 
     logger.i(documentSnapshot.data());
     logger.t('User id: $userId');
 
     if (documentSnapshot.exists) {
-      Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
       return data['name'];
     } else {
       throw Exception('User not found');
@@ -248,13 +272,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<String> getRole(String userId) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    DocumentSnapshot documentSnapshot = await firestore.collection('user').doc(userId).get();
+    DocumentSnapshot documentSnapshot =
+        await firestore.collection('user').doc(userId).get();
 
     logger.i(documentSnapshot.data());
     logger.t('User id: $userId');
 
     if (documentSnapshot.exists) {
-      Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
       return data['role'];
     } else {
       throw Exception('User not found');

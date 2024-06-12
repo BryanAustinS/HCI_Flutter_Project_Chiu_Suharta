@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/page/features/techniker_auftrage_ansehen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
 
+import '../profile/profile_page.dart';
+
 class TechnikerHome extends StatefulWidget {
-  const TechnikerHome({super.key});
+  final String userId;
+
+  const TechnikerHome({super.key, required this.userId});
 
   @override
   State<TechnikerHome> createState() => _TechnikerHomeState();
@@ -35,9 +40,23 @@ class _TechnikerHomeState extends State<TechnikerHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle),
+            icon: Image.asset('assets/images/avatar_profile.png'),
             onPressed: () {
-              //Navigate to logout page
+              var ProfilePicture =
+                  Image.asset('assets/images/avatar_profile.png');
+              logger.t('Profile button clicked with ' +
+                  widget.userId +
+                  ' as userId');
+              //Navigate to profile page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    profilePicture: ProfilePicture,
+                    userId: widget.userId,
+                  ),
+                ),
+              );
             },
             color: bgColor,
           ),
@@ -50,7 +69,6 @@ class _TechnikerHomeState extends State<TechnikerHome> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               // Reparaturen ansehen
               SizedBox(
                 height: 275,
@@ -59,6 +77,12 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                   onTap: () {
                     logger.t('Reparaturen ansehen button clicked');
                     // Navigate to page TechnikerReparaturAnsehen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AuftrageAnsehen(),
+                      ),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
