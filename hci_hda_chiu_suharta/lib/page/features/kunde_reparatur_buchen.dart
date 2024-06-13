@@ -481,7 +481,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
               };
               await booking.addUserBooking(userBookingMap);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text('Reparatur erfolgreich gebucht'),
                 ),
               );
