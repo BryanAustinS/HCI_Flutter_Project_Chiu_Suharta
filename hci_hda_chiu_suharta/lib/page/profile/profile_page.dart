@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BetreiberHome(),
+                  builder: (context) => BetreiberHome(userId: widget.userId),
                 ),
               );
             } else {
