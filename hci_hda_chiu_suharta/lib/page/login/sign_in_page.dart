@@ -262,7 +262,7 @@ class _SignInScreenState extends State<SignInScreen> {
             logger.t('User is successfully signed in with ' + user.uid);
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) =>  TechnikerHome(userId : user.uid)),
+              MaterialPageRoute(builder: (context) => TechnikerHome(userId: user.uid)),
                 (Route<dynamic> route) => false,
             );
           } else {

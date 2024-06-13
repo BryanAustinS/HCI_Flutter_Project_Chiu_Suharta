@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:hci_hda_chiu_suharta/localization/locales.dart';
+import 'package:hci_hda_chiu_suharta/page/features/kunde_auftrage_verfolgen.dart';
 import 'package:logger/logger.dart';
 
 import '../profile/profile_page.dart';
 import 'package:hci_hda_chiu_suharta/page/features/kunde_reparatur_buchen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
-
 class KundeHome extends StatefulWidget {
   final String userId;
+
   const KundeHome({super.key, required this.userId});
 
   @override
@@ -45,7 +46,9 @@ class _KundeHomeState extends State<KundeHome> {
             onPressed: () {
               var profilePicture =
                   Image.asset('assets/images/avatar_profile.png');
-              logger.t('Profile button clicked with ' + widget.userId + ' as userId');
+              logger.t('Profile button clicked with ' +
+                  widget.userId +
+                  ' as userId');
               //Navigate to profile page
               Navigator.pushReplacement(
                 context,
@@ -78,9 +81,10 @@ class _KundeHomeState extends State<KundeHome> {
                     // Navigate to page KundeReparaturBuchen
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: ((context) => ReparaturBuchen(
-                        userId: widget.userId,
-                      ))),
+                      MaterialPageRoute(
+                          builder: ((context) => ReparaturBuchen(
+                                userId: widget.userId,
+                              ))),
                     );
                   },
                   child: Container(
@@ -118,7 +122,7 @@ class _KundeHomeState extends State<KundeHome> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Antrag verfolgen
+              // Auftrag verfolgen
               SizedBox(
                 height: 275,
                 width: 275,
@@ -126,6 +130,12 @@ class _KundeHomeState extends State<KundeHome> {
                   onTap: () {
                     logger.t('Auftrag verfolgen button clicked');
                     // Navigate to page KundeAntragVerfolgen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) => AuftragVerfolgen()),
+                      ),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
