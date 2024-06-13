@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/page/features/techniker_auftrage_ansehen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
+import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolgen.dart';
 
 import '../profile/profile_page.dart';
 
@@ -126,6 +127,13 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                   onTap: () {
                     logger.t('Ersatzteile ansehen button clicked');
                     // Navigate to page TechnikerAuslastungAnsehen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: ((context) => AuslastungVerfolgen(
+                        userId: widget.userId,
+                      )))
+                      );
+
                   },
                   child: Container(
                     decoration: BoxDecoration(
