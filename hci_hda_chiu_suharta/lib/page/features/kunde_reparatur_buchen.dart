@@ -23,6 +23,7 @@ class ReparaturBuchen extends StatefulWidget {
 class _ReparaturBuchenState extends State<ReparaturBuchen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int _totalPrice = 0;
 
   final _tabs = [
     Tab(text: 'Komponente'),
@@ -380,7 +381,6 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
   Widget _buildSubtotal() {
     Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
     final warehouse = fahrrarzt.warehouse;
-
     int totalPrice = 0;
 
     //Calculate Komponente prices
@@ -438,6 +438,10 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
       }
     }
 
+    setState(() {
+      _totalPrice = totalPrice;
+    });
+
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -467,36 +471,17 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
       onPressed: _komponenteChecked.any((checked) => checked) ||
               _zubehoerChecked.any((checked) => checked)
           ? () async {
-              Booking booking = Booking(userId: widget.userId);
-
-              String? userName = await booking.fetchUserName();
-
-              Map<String, dynamic> userBookingMap = {
-                'userId': widget.userId,
-                'name': userName,
-                'status': 'pending',
-                'komponente': _komponenteChecked,
-                'zubehoer': _zubehoerChecked,
-                'price': 0,
-              };
-              await booking.addUserBooking(userBookingMap);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Reparatur erfolgreich gebucht'),
-                ),
-              );
-
-              Future.delayed(const Duration(seconds: 0), () {
+              bool confirm = await _showConfirmationDialog();
+              if (confirm) {
+                await _confirmBooking();
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => KundeHome(
-                      userId: widget.userId,
-                    ),
+                    builder: (context) => KundeHome(userId: widget.userId),
                   ),
-                  (Route<dynamic> route) => false,
+                  (route) => false,
                 );
-              });
+              }
             }
           : null,
       child: Text(
@@ -506,6 +491,95 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
           fontSize: 18,
           fontFamily: 'Poppins',
         ),
+      ),
+    );
+  }
+
+  Future<bool> _showConfirmationDialog() async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Confirm Booking'),
+              content: Text('Are you sure you want to book this repair?'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: Text('Confirm'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  Future<void> _confirmBooking() async {
+    Fahrrarzt fahrrarzt =
+        Provider.of<FahrrarztProvider>(context, listen: false).fahrrarzt;
+    final warehouse = fahrrarzt.warehouse;
+
+    List<String> komponenteList = [];
+    List<String> zubehoerList = [];
+
+    for (int i = 0; i < _komponenteChecked.length; i++) {
+      if (warehouse == null) {
+        break;
+      }
+      if (_komponenteChecked[i] == true) {
+        var sparepart = warehouse.keys.elementAt(i);
+        if (i == 0 || i == 3 || i == 4) {
+          if (i == 0) {
+            if (frontBrake) komponenteList.add("front ${sparepart.name}");
+            if (rearBrake) komponenteList.add("rear ${sparepart.name} ");
+          } else if (i == 3) {
+            if (frontTyre) komponenteList.add("front ${sparepart.name}");
+            if (rearTyre) komponenteList.add("rear ${sparepart.name} ");
+          } else if (i == 4) {
+            if (frontSpoke) komponenteList.add("front ${sparepart.name}");
+            if (rearSpoke) komponenteList.add("rear ${sparepart.name}");
+          }
+        } else {
+          komponenteList.add(sparepart.name!);
+        }
+      }
+    }
+
+    for (int i = 0; i < _zubehoerChecked.length; i++) {
+      if (warehouse == null) {
+        break;
+      }
+      if (_zubehoerChecked[i] == true) {
+        int realIndex = i + 5;
+        var sparepart = warehouse.keys.elementAt(realIndex);
+        zubehoerList.add(sparepart.name!);
+      }
+    }
+
+    Booking booking = Booking(userId: widget.userId);
+
+    String? userName = await booking.fetchUserName();
+
+    Map<String, dynamic> userBookingMap = {
+      'userId': widget.userId,
+      'name': userName,
+      'status': 'pending',
+      'komponente': komponenteList,
+      'zubehoer': zubehoerList,
+      'price': _totalPrice,
+    };
+    await booking.addUserBooking(userBookingMap);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Reparatur erfolgreich gebucht'),
       ),
     );
   }
