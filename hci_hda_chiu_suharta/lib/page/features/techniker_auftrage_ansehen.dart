@@ -105,24 +105,51 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                           ),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  'Finish',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 24,
-                                    fontFamily: 'Poppins-Bold',
-                                    fontWeight: FontWeight.bold,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: TextButton(
+                                    onPressed: () {
+                                      showDetailDialog(
+                                          context, data, booking.id);
+                                    },
+                                    child: const Text(
+                                      'Show Details',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 24,
+                                        fontFamily: 'Poppins-Bold',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: TextButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'Finish',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 24,
+                                        fontFamily: 'Poppins-Bold',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -258,5 +285,95 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
         ],
       ),
     );
+  }
+
+  void showDetailDialog(
+      BuildContext context, Map<String, dynamic> data, String bookingId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            List<Map<String, dynamic>> components =
+                List<Map<String, dynamic>>.from(data['komponente']);
+            List<Map<String, dynamic>> accessories =
+                List<Map<String, dynamic>>.from(data['zubehoer']);
+
+            List<bool> componentDone = components
+                .map((component) => component['done'] as bool)
+                .toList();
+            List<bool> accessoryDone = accessories
+                .map((accessory) => accessory['done'] as bool)
+                .toList();
+
+            return AlertDialog(
+              title: const Text('Details'),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Components:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    for (int i = 0; i < components.length; i++)
+                      CheckboxListTile(
+                        title: Text(components[i]['name']),
+                        value: componentDone[i],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            componentDone[i] = value ?? false;
+                            components[i]['done'] = componentDone[i];
+                          });
+                        },
+                      ),
+                    const Text(
+                      'Accessories:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    for (int i = 0; i < accessories.length; i++)
+                      CheckboxListTile(
+                        title: Text(accessories[i]['name']),
+                        value: accessoryDone[i],
+                        onChanged: (bool? value) {
+                          setState(() {
+                            accessoryDone[i] = value ?? false;
+                            accessories[i]['done'] = accessoryDone[i];
+                          });
+                        },
+                      ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    updateBookingDetails(bookingId, components, accessories);
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Save'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void updateBookingDetails(
+      String bookingId,
+      List<Map<String, dynamic>> components,
+      List<Map<String, dynamic>> accessories) {
+    FirebaseFirestore.instance.collection('booking').doc(bookingId).update({
+      'komponente': components,
+      'zubehoer': accessories,
+    });
   }
 }
