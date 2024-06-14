@@ -286,6 +286,7 @@ Widget _buildConfirmButton() {
           if (warehouse[sparepart] != null) {
             if (_quantities[i] != null && warehouse[sparepart] != null) {
               warehouse[sparepart] = warehouse[sparepart]! + _quantities[i]!;
+
             }
           }
         }

@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 Color primaryColor = lightColorScheme.primary;
 Color bgColor = lightColorScheme.background;
 Color unselectedLabelColor = Color(0xff5f6368);
+Color secondaryColor = Color.fromARGB(245, 189, 189, 189);
+
 
 class EinnahmeVerfolgen extends StatefulWidget {
   final String userId;
@@ -55,7 +57,7 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: primaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -94,8 +96,8 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
       },
     );
   }
-
-Widget _buildEinnahmeTrailing(int index) {
+  
+  Widget _buildEinnahmeTrailing(int index) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -108,7 +110,7 @@ Widget _buildEinnahmeTrailing(int index) {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           decoration: BoxDecoration(
-            border: Border.all(color: bgColor),
+            border: Border.all(color: secondaryColor),
             borderRadius: BorderRadius.circular(5)
           ),
           child: Row(
@@ -154,8 +156,66 @@ Widget _buildEinnahmeTrailing(int index) {
 
 
   Widget _buildAusgabeList() {
-    return Center(child: Text('Ausgabe list goes here'));
-  }
+  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+
+  return Container(
+    child: ListView.builder(
+      itemCount: fahrrarzt.warehouse!.length,
+      itemBuilder: (context, index) {
+        final warehouse = fahrrarzt.warehouse!;
+        final sparepart = warehouse.keys.elementAt(index);
+        final quantity = warehouse[sparepart] ?? 0;
+        final totalPrice = quantity * sparepart.buyPrice!;
+
+        return Column(
+          children: [
+            ListTile(
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          sparepart.name ?? 'Unknown',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 4), 
+                        Text(
+                          'Amount: $quantity',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Total:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 4), // Adjust vertical spacing between texts
+                      Text(
+                        '\$${totalPrice.toStringAsFixed(2)}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Divider(), // Optional divider between items
+          ],
+        );
+      },
+    ),
+  );
+}
+
+
+
+
 
   Widget _buildSubtotal() {
     int nettoIncome = 0;
@@ -163,7 +223,7 @@ Widget _buildEinnahmeTrailing(int index) {
     int ausgabe = 0;
 
     // CALCULATE EINNAHME HERE
-    
+
 
     return Padding(
       padding: const EdgeInsets.all(10),
