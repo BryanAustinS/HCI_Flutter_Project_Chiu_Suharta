@@ -1,8 +1,11 @@
 import 'package:another_stepper/another_stepper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:logger/logger.dart';
 
 import '../../theme/theme.dart';
 
@@ -14,98 +17,68 @@ class AuftragVerfolgen extends StatefulWidget {
 }
 
 class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
+  final TextEditingController _searchController = TextEditingController();
   bool result = false;
-  List<StepperData> stepperData = [
-    StepperData(
-      title: StepperText(
-        "Buchung erstellt",
-        textStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      subtitle: StepperText("Ihre Buchung wurde erstellt"),
-      iconWidget: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: const BoxDecoration(
-          color: Colors.orangeAccent,
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
-        child: const Icon(
-          Icons.check_circle,
-          color: Colors.white,
-        ),
-      ),
-    ),
-    StepperData(
-      title: StepperText(
-        "Buchung Bestätigt",
-        textStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      subtitle: StepperText("Ihre Buchung wurde bestätigt"),
-      iconWidget: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: const BoxDecoration(
-          color: Colors.orangeAccent,
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
-        child: const Icon(
-          Icons.check_circle,
-          color: Colors.white,
-        ),
-      ),
-    ),
-    StepperData(
-      title: StepperText(
-        "In Bearbeitung",
-        textStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      subtitle: StepperText("Ihre Buchung ist in Bearbeitung"),
-      iconWidget: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: const BoxDecoration(
-          color: Colors.orangeAccent,
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
-        child: const Icon(
-          Icons.check_circle,
-          color: Colors.white,
-        ),
-      ),
-    ),
-    StepperData(
-      title: StepperText(
-        "Fertig",
-        textStyle: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      iconWidget: Stack(
-        children: [
-          Center(
-            child: Icon(
-              Icons.history,
-              color: Colors.green,
-              size: 40,
-            ),
+  bool isLoading = false;
+  DocumentSnapshot? bookingSnapshot;
+  Logger logger = Logger();
+  List<StepperData> stepperData = [];
+  int activeStep = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    stepperData = _getinitialStepperData();
+  }
+
+  // Define initial stepper data
+  List<StepperData> _getinitialStepperData() {
+    return [
+      StepperData(
+        title: StepperText(
+          "Buchung erstellt",
+          textStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
           ),
-          Center(
-            child: SpinKitPulse(
-              color: Colors.green,
-              size: 200,
-            ),
-          ),
-        ],
+        ),
+        subtitle: StepperText("Ihre Buchung wurde erstellt"),
+        iconWidget: _initialIcon(),
       ),
-    ),
-  ];
+      StepperData(
+        title: StepperText(
+          "Buchung Bestätigt",
+          textStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        subtitle: StepperText("Ihre Buchung wurde bestätigt"),
+        iconWidget: _initialIcon()
+      ),
+      StepperData(
+        title: StepperText(
+          "In Bearbeitung",
+          textStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        subtitle: StepperText("Ihre Buchung ist in Bearbeitung"),
+        iconWidget: _initialIcon()
+      ),
+      StepperData(
+        title: StepperText(
+          "Fertig",
+          textStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        iconWidget: _initialFinishIcon(),
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +131,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: TextField(
+                  controller: _searchController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
@@ -170,9 +144,16 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                 width: 20,
               ),
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   setState(() {
-                    result=true;
+                    isLoading = true;
+                  });
+                  var bookingId = _searchController.text;
+                  logger.i("Searching booking with ID: $bookingId");
+                  await _searchBooking(bookingId);
+                  setState(() {
+                    isLoading = false;
+                    result = bookingSnapshot != null;
                   });
                 },
                 child: Icon(
@@ -194,9 +175,17 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                   style: TextStyle(fontSize: 25),
                 ),
                 Spacer(),
-                Icon(
-                  Icons.close,
-                  size: 25,
+                IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      result = false;
+                      _searchController.clear();
+                    });
+                  },
                 ),
               ],
             ),
@@ -204,15 +193,25 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
           SizedBox(
             height: 5,
           ),
+          isLoading
+              ? Center(
+                  child: SpinKitFadingCircle(
+                    color: primaryColor,
+                    size: 50,
+                  ),
+                )
+              :
           result
               ? Padding(
                   padding: const EdgeInsets.only(top: 20, left: 50),
                   child: AnotherStepper(
                     stepperList: stepperData,
-                    inActiveBarColor: Colors.orangeAccent,
+                    inActiveBarColor: Colors.grey,
+                    activeBarColor: Colors.orangeAccent,
                     stepperDirection: Axis.vertical,
                     iconWidth: 40,
                     iconHeight: 40,
+                    activeIndex: activeStep,
                   ),
                 )
               : Transform(
@@ -224,6 +223,175 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                   ),
                 ),
         ],
+      ),
+    );
+  }
+
+  Future<void> _searchBooking(String bookingId) async {
+    try {
+      if (bookingId.isEmpty){
+        logger.e("Booking ID is empty");
+        return;
+      }
+      logger.i("Searching booking with ID: $bookingId");
+
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('booking')
+          .where(bookingId)
+          .get();
+      if (docSnapshot.docs.isNotEmpty) {
+        logger.i("Booking found: ${docSnapshot.docs.first.data()}");
+        bookingSnapshot = docSnapshot.docs.first;
+        // update stepper data
+        _updateStepperData(bookingSnapshot!['status']);
+      } else {
+        logger.w("Booking not found");
+        bookingSnapshot = null;
+        stepperData = _getinitialStepperData();
+        activeStep = 0;
+      }
+    } catch (e) {
+      logger.e(e);
+      bookingSnapshot = null;
+      stepperData = _getinitialStepperData();
+      activeStep = 0;
+    }
+  }
+
+  void _updateStepperData(String status) {
+    stepperData = _getinitialStepperData(); // reset to inital stepper data
+
+    logger.i("Updating stepper data with status: $status");
+    // Update stepper data based on status
+    switch (status) {
+      case 'pending':
+        activeStep = 0;
+        stepperData[0] = StepperData(
+          title: stepperData[0].title,
+          subtitle: stepperData[0].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        break;
+      case 'confirmed':
+        activeStep = 1;
+        stepperData[0] = StepperData(
+          title: stepperData[0].title,
+          subtitle: stepperData[0].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        stepperData[1] = StepperData(
+          title: stepperData[1].title,
+          subtitle: stepperData[1].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        break;
+      case 'processing':
+        activeStep = 2;
+        stepperData[0] = StepperData(
+          title: stepperData[0].title,
+          subtitle: stepperData[0].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        stepperData[1] = StepperData(
+          title: stepperData[1].title,
+          subtitle: stepperData[1].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        stepperData[2] = StepperData(
+          title: stepperData[2].title,
+          subtitle: stepperData[2].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        break;
+      case 'finished':
+        activeStep = 3;
+        stepperData[0] = StepperData(
+          title: stepperData[0].title,
+          subtitle: stepperData[0].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        stepperData[1] = StepperData(
+          title: stepperData[1].title,
+          subtitle: stepperData[1].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        stepperData[2] = StepperData(
+          title: stepperData[2].title,
+          subtitle: stepperData[2].subtitle,
+          iconWidget: _completedIcon(),
+        );
+        stepperData[3] = StepperData(
+          title: stepperData[3].title,
+          subtitle: stepperData[3].subtitle,
+          iconWidget: _completedFinishIcon()
+        );
+        break;
+      default:
+        activeStep = 0;
+        logger.w("Unknown status: $status");
+        break;
+    }
+    setState(() {});
+  }
+
+  Widget _completedIcon() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: const BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: const Icon(
+        Icons.check_circle,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _completedFinishIcon(){
+    return Stack(
+      children: [
+        Center(
+          child: Icon(
+            Icons.history,
+            color: Colors.green,
+            size: 40,
+          ),
+        ),
+        Center(
+          child: SpinKitPulse(
+            color: Colors.green,
+            size: 200,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _initialFinishIcon(){
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: const BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: const Icon(
+        Icons.history,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _initialIcon(){
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: const BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: const Icon(
+        Icons.radio_button_unchecked,
+        color: Colors.white,
       ),
     );
   }
