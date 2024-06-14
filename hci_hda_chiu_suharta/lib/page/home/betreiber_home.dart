@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolgen.dart';
+import 'package:hci_hda_chiu_suharta/page/features/betreiber_einnahme_verfolgen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 
 class BetreiberHome extends StatefulWidget {
@@ -59,6 +60,13 @@ class _BetreiberHomeState extends State<BetreiberHome> {
                   onTap: () {
                     print('Einnahme verfolgen pressed');
                     // Navigate to page EinnahmeVerfolgen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) => EinnahmeVerfolgen(
+                          userId: widget.userId))),
+                    );
+                    
                   },
                   child: Container(
                     decoration: BoxDecoration(

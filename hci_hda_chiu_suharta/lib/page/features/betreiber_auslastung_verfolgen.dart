@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:hci_hda_chiu_suharta/page/home/betreiber_home.dart';
-import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
 

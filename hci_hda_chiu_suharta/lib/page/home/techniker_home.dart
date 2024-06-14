@@ -32,7 +32,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
           style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Poppins',
+            fontFamily: 'Montserrat',
             letterSpacing: 2.0,
             color: bgColor,
           ),
@@ -107,6 +107,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                               'Aufträge ansehen',
                               style: TextStyle(
                                 fontSize: 23,
+                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
@@ -157,6 +158,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                               'Ersatzteile ansehen',
                               style: TextStyle(
                                 fontSize: 23,
+                                fontFamily: 'Poppins',
                                 color: primaryColor,
                               ),
                             ),
