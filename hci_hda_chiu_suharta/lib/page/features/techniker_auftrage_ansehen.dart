@@ -137,7 +137,14 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      FirebaseFirestore.instance
+                                          .collection('booking')
+                                          .doc(booking.id)
+                                          .update({
+                                        'status': 'finished',
+                                      });
+                                    },
                                     child: const Text(
                                       'Finish',
                                       style: TextStyle(
@@ -252,6 +259,7 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                                   .doc(booking.id)
                                                   .update({
                                                 'chosen': true,
+                                                'status': 'confirmed'
                                               });
                                               Navigator.pop(context);
                                             },
@@ -374,6 +382,7 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
     FirebaseFirestore.instance.collection('booking').doc(bookingId).update({
       'komponente': components,
       'zubehoer': accessories,
+      'status': 'processing',
     });
   }
 }
