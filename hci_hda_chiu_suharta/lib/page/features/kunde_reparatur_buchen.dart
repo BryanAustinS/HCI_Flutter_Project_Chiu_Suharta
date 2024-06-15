@@ -527,8 +527,8 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
         Provider.of<FahrrarztProvider>(context, listen: false).fahrrarzt;
     final warehouse = fahrrarzt.warehouse;
     
-    List<String> komponenteList = [];
-    List<String> zubehoerList = [];
+    List<Map<String, dynamic>> komponenteList = [];
+    List<Map<String, dynamic>> zubehoerList = [];
 
     for (int i = 0; i < _komponenteChecked.length; i++) {
       if (warehouse == null) {
@@ -538,17 +538,29 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
         var sparepart = warehouse.keys.elementAt(i);
         if (i == 0 || i == 3 || i == 4) {
           if (i == 0) {
-            if (frontBrake) komponenteList.add("front ${sparepart.name}");
-            if (rearBrake) komponenteList.add("rear ${sparepart.name} ");
+            if (frontBrake) {
+              komponenteList.add({"name": "front ${sparepart.name}", "done": false});
+            }
+            if (rearBrake) {
+              komponenteList.add({"name": "rear ${sparepart.name}", "done": false});
+            }
           } else if (i == 3) {
-            if (frontTyre) komponenteList.add("front ${sparepart.name}");
-            if (rearTyre) komponenteList.add("rear ${sparepart.name} ");
+            if (frontTyre) {
+              komponenteList.add({"name": "front ${sparepart.name}", "done": false});
+            }
+            if (rearTyre) {
+              komponenteList.add({"name": "rear ${sparepart.name}", "done": false});
+            }
           } else if (i == 4) {
-            if (frontSpoke) komponenteList.add("front ${sparepart.name}");
-            if (rearSpoke) komponenteList.add("rear ${sparepart.name}");
+            if (frontSpoke) {
+              komponenteList.add({"name": "front ${sparepart.name}", "done": false});
+            }
+            if (rearSpoke) {
+              komponenteList.add({"name": "rear ${sparepart.name}", "done": false});
+            }
           }
         } else {
-          komponenteList.add(sparepart.name!);
+          komponenteList.add({"name": sparepart.name!, "done": false});
         }
       }
     }
@@ -560,7 +572,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
       if (_zubehoerChecked[i] == true) {
         int realIndex = i + 5;
         var sparepart = warehouse.keys.elementAt(realIndex);
-        zubehoerList.add(sparepart.name!);
+        zubehoerList.add({"name": sparepart.name!, "done": false});
       }
     }
 
