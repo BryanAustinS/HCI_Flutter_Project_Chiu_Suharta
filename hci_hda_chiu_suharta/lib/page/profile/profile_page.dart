@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     _flutterLocalization = FlutterLocalization.instance;
     _currentLanguageCode = _flutterLocalization.currentLocale!.languageCode;
-    print(_currentLanguageCode);
+    logger.i(_currentLanguageCode);
   }
 
   @override

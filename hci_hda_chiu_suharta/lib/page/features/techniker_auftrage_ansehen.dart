@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hci_hda_chiu_suharta/class/sparepart.dart';
 import 'package:lottie/lottie.dart';
+import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 
 import '../../theme/theme.dart';
 
@@ -362,6 +364,13 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                 ),
                 TextButton(
                   onPressed: () {
+                    Navigator.pop(context);
+                    showAddSparePartDialog(context, bookingId);
+                  },
+                  child: const Text('Add Spare Part'),
+                ),
+                TextButton(
+                  onPressed: () {
                     updateBookingDetails(bookingId, components, accessories);
                     Navigator.pop(context);
                   },
@@ -373,6 +382,86 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
         );
       },
     );
+  }
+
+  void showAddSparePartDialog(BuildContext context, String bookingId) {
+    final spareParts = FahrrarztProvider().fahrrarzt.warehouse!.keys.toList();
+    final List<bool> selectedParts = List<bool>.filled(spareParts.length, false);
+    final Map<Sparepart, TextEditingController> partPriceControllers = {
+      for (var part in spareParts) part: TextEditingController(text: part.sellPrice.toString()),
+    };
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Add Spare Parts'),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (int i = 0; i < spareParts.length; i++)
+                      Column(
+                        children: [
+                          CheckboxListTile(
+                            title: Text('${spareParts[i].name} - ${spareParts[i].sellPrice}'),
+                            value: selectedParts[i],
+                            onChanged: (bool? value) {
+                              setState(() {
+                                selectedParts[i] = value ?? false;
+                              });
+                            },
+                          ),
+                          if (selectedParts[i])
+                            TextField(
+                              controller: partPriceControllers[spareParts[i]],
+                              decoration: InputDecoration(
+                                labelText: 'Price for ${spareParts[i].name}',
+                              ),
+                              keyboardType: TextInputType.number,
+                            ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+              actions: <Widget> [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: (){
+                    addSpareParts(bookingId, spareParts, selectedParts, partPriceControllers);
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Add Spare Part'),
+                )
+              ]
+            );
+          }
+        );
+      }
+    );
+  }
+
+  void addSpareParts(String bookingId, List<Sparepart> parts, List<bool> selectedParts, Map<Sparepart, TextEditingController> partPriceControllers) {
+    final List<Map<String,dynamic>> spareParts = [];
+    for (int i = 0; i < selectedParts.length; i++) {
+      if (selectedParts[i]) {
+        spareParts.add({
+          'name': parts[i].name,
+          'price': int.parse(partPriceControllers[parts[i]]!.text),
+          'confirmed': false,
+        });
+      }
+    }
+    FirebaseFirestore.instance.collection('booking').doc(bookingId).update({
+      'additionalSpareParts': FieldValue.arrayUnion(spareParts),
+    });
   }
 
   void updateBookingDetails(

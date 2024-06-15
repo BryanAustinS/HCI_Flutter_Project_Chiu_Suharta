@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:lottie/lottie.dart';
 import 'package:logger/logger.dart';
 
+import '../../class/sparepart.dart';
 import '../../theme/theme.dart';
 
 class AuftragVerfolgen extends StatefulWidget {
@@ -223,18 +225,27 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                               ),
                             ),
                             SizedBox(height: 20),
+                            if (activeStep == 2) _buildConfirmPartsButton(),
                             if (activeStep == 3)
                               Center(
                                 child: ElevatedButton(
                                   onPressed: () {
                                     _showFinishDialog();
                                   },
-                                  child: Text('Finish Booking'),
+                                  child: const Text(
+                                    'Finish Booking',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat',
+                                    ),
+                                  ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: primaryColor,
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 24, vertical: 12),
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -469,6 +480,164 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
       logger.i("Booking deleted successfully");
     } else {
       logger.w("No booking to delete");
+    }
+  }
+
+  Widget _buildConfirmPartsButton() {
+    final data = bookingSnapshot!.data() as Map<String, dynamic>?;
+    final List<dynamic> additionalSpareParts =
+        data?['additionalSpareParts'] ?? [];
+
+    bool hasUnconfirmedParts =
+        additionalSpareParts.any((part) => part['confirmed'] == false);
+
+    return Center(
+        child: Stack(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            _showConfirmPartsDialog();
+          },
+          child: const Text(
+            'Confirm Parts',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontFamily: 'Montserrat',
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: lightColorScheme.primary,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            textStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontFamily: 'Montserrat',
+            ),
+          ),
+        ),
+        if (hasUnconfirmedParts)
+          Positioned(
+              right: 0,
+              top: 0,
+              child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 20,
+                    minHeight: 20,
+                  ),
+                  child: Text(
+                    '!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  )))
+      ],
+    ));
+  }
+
+  void _showConfirmPartsDialog() {
+    if (bookingSnapshot != null) {
+      final data = bookingSnapshot!.data() as Map<String, dynamic>?;
+
+      if (data != null) {
+        final List<dynamic> additionalSpareParts =
+            data['additionalSpareParts'] ?? [];
+        final List<bool> selectedParts =
+            List<bool>.filled(additionalSpareParts.length, false);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+              builder: (context, setState) {
+                return AlertDialog(
+                  title: const Text('Confirm Additional Spare Parts'),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < additionalSpareParts.length; i++)
+                          if (additionalSpareParts[i]['confirmed'] == false)
+                            CheckboxListTile(
+                              title: Text(
+                                  '${additionalSpareParts[i]['name']} - \$${additionalSpareParts[i]['price']}'),
+                              value: selectedParts[i],
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  selectedParts[i] = value ?? false;
+                                });
+                              },
+                            ),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        _confirmSpareParts(selectedParts, additionalSpareParts);
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Confirm'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      } else {
+        logger.w("No additional spare parts data available.");
+      }
+    } else {
+      logger.w("No booking available to confirm parts.");
+    }
+  }
+
+  Future<void> _confirmSpareParts(
+      List<bool> selectedParts, List<dynamic> additionalSpareParts) async {
+    if (bookingSnapshot != null) {
+      final List<Map<String, dynamic>> updatedParts = [];
+      double totalPrice = 0;
+
+      for (int i = 0; i < selectedParts.length; i++) {
+        if (selectedParts[i]) {
+          updatedParts.add({
+            'name': additionalSpareParts[i]['name'],
+            'price': additionalSpareParts[i]['price'],
+            'confirmed': true,
+          });
+          totalPrice += additionalSpareParts[i]['price'];
+        } else {
+          updatedParts.add(additionalSpareParts[i]);
+        }
+      }
+
+      await FirebaseFirestore.instance
+          .collection('booking')
+          .doc(bookingSnapshot!.id)
+          .update({
+        'additionalSpareParts': updatedParts,
+        'price': FieldValue.increment(totalPrice),
+      });
+
+      logger.i("Additional spare parts confirmed successfully.");
+    } else {
+      logger.w("No booking available to confirm parts.");
     }
   }
 }
