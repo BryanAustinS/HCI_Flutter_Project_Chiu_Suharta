@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/class/Booking.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
@@ -23,7 +24,7 @@ class EinnahmeVerfolgen extends StatefulWidget {
 class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<bool> _isExpandedList = List.generate(10, (_) => false);  // Initial state for 10 items
-
+  var _einnahme = 0;
   final _tabs = [
     Tab(text: 'Einnahme'),
     Tab(text: 'Ausgabe'),
@@ -110,7 +111,7 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           decoration: BoxDecoration(
-            border: Border.all(color: secondaryColor),
+            border: Border.all(color: bgColor),
             borderRadius: BorderRadius.circular(5)
           ),
           child: Row(
@@ -218,12 +219,38 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
 
 
   Widget _buildSubtotal() {
-    int nettoIncome = 0;
+    int betrag = 0;
     int einnahme = 0;
     int ausgabe = 0;
 
-    // CALCULATE EINNAHME HERE
+    Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+    final firestore = FirebaseFirestore.instance;
 
+    final warehouse = fahrrarzt.warehouse!;
+
+  // Calculate Einnahme
+    firestore.collection('booking').get().then((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        int price = (doc['price']);
+        einnahme += price;
+      }
+      setState(() {
+        _einnahme = einnahme;
+      });
+    }).catchError((error) {
+      print('Error getting documents: $error');
+    });    
+
+    // CALCULATE AUSGABE 
+    for (int i = 0; i < fahrrarzt.warehouse!.length ; i++){
+        var sparepart = warehouse.keys.elementAt(i);
+        int quantity = warehouse[sparepart] ?? 0;
+        int totalPrice = quantity * sparepart.buyPrice!;
+        ausgabe += totalPrice;
+    }
+
+    // CALCULATE BETRAG
+    betrag = _einnahme - ausgabe;
 
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -235,7 +262,7 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Einnahme: \$ $einnahme',
+                'Einnahme: \$ $_einnahme',
                  style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Poppins',
@@ -274,11 +301,11 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
                     ),
                   ),
                   Text(
-                '\$ $nettoIncome',           
+                '\$ $betrag',           
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Poppins',
-                  color: nettoIncome >= 0 ? Colors.green : Colors.red
+                  color: betrag >= 0 ? Colors.green : Colors.red
                 ),
               ),
                 ],
