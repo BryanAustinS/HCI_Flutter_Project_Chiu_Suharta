@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:hci_hda_chiu_suharta/page/home/betreiber_home.dart';
+import 'package:hci_hda_chiu_suharta/page/home/techniker_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +21,8 @@ class AuslastungVerfolgen extends StatefulWidget {
 }
 
 class _AuslastungVerfolgenState extends State<AuslastungVerfolgen> with SingleTickerProviderStateMixin {
+
+  
   
   late TabController _tabController;
   
@@ -92,95 +95,103 @@ class _AuslastungVerfolgenState extends State<AuslastungVerfolgen> with SingleTi
   }
 
   Widget _buildKomponenteList() {
-  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+  return Consumer<FahrrarztProvider>(
+    builder: (context, fahrrarztProvider, _) {
+      final fahrrarzt = fahrrarztProvider.fahrrarzt;
+      final warehouse = fahrrarzt.warehouse;
 
-return Container(
-      color: lightColorScheme.background,
-      child: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          final warehouse = fahrrarzt.warehouse;
-          if (warehouse == null) {
-            return ListTile(
-              title: Text('No data available'),
-            );
-          }
-          final sparepart = warehouse.keys.elementAt(index);
-          return Column(
-            children: [
-              ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(sparepart.name ?? 'Unknown Part'),
-                        Text(
-                          'In Stock: ${warehouse[sparepart]}',
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text('\$${sparepart.buyPrice?.toStringAsFixed(2) ?? '0.00'}'),
-                  ],
-                ),
-                trailing: _buildKomponenteTrailing(index),
-              ),
-              Divider(height: 1, color: Colors.grey), 
-            ],
-          );
-        },
-      ),
-    );
-}
+      if (warehouse == null) {
+        return Center(child: CircularProgressIndicator());
+      }
 
-  Widget _buildZubehoerList() {
-  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
-  return Container(
-    color: lightColorScheme.background,
-    child: ListView.builder(
-      itemCount: 4,
-      itemBuilder: (context, tabIndex) {
-        final warehouse = fahrrarzt.warehouse;
-        if (warehouse == null) {
-          return ListTile(
-            title: Text('No data available'),
-          );
-        }
-        final sparepart = warehouse.keys.elementAt(tabIndex + 5);
-        return Column(
-          children: [
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      return Container(
+        color: bgColor,
+        child: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            final sparepart = warehouse.keys.elementAt(index);
+            return Column(
+              children: [
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(sparepart.name!),
-                      Text(
-                          'In Stock: ${warehouse[sparepart]}',
-                          style: TextStyle(
-                            fontSize: 10,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(sparepart.name ?? 'Unknown Part'),
+                          Text(
+                            'In Stock: ${warehouse[sparepart]}',
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
                           ),
-                        ),
+                        ],
+                      ),
+                      Text('\$${sparepart.buyPrice?.toStringAsFixed(2) ?? '0.00'}'),
                     ],
                   ),
-                  Text('\$${sparepart.buyPrice!.toStringAsFixed(2)}'),
-                ],
-              ),
-              trailing: _buildZubehoerTrailing(tabIndex),
-            ),
-            Divider(height: 1, color: Colors.grey), 
-          ],
-        );
-      },
-    ),
+                  trailing: _buildKomponenteTrailing(index),
+                ),
+                Divider(height: 1, color: Colors.grey),
+              ],
+            );
+          },
+        ),
+      );
+    },
   );
 }
+
+Widget _buildZubehoerList() {
+  return Consumer<FahrrarztProvider>(
+    builder: (context, fahrrarztProvider, _) {
+      final fahrrarzt = fahrrarztProvider.fahrrarzt;
+      final warehouse = fahrrarzt.warehouse;
+
+      if (warehouse == null) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      return Container(
+        color: bgColor,
+        child: ListView.builder(
+          itemCount: 4,
+          itemBuilder: (context, tabIndex) {
+            final sparepart = warehouse.keys.elementAt(tabIndex + 5);
+            return Column(
+              children: [
+                ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(sparepart.name ?? 'Unknown Part'),
+                          Text(
+                            'In Stock: ${warehouse[sparepart]}',
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text('\$${sparepart.buyPrice?.toStringAsFixed(2) ?? '0.00'}'),
+                    ],
+                  ),
+                  trailing: _buildZubehoerTrailing(tabIndex),
+                ),
+                Divider(height: 1, color: Colors.grey),
+              ],
+            );
+          },
+        ),
+      );
+    },
+  );
+}
+
   
 
   Widget _buildKomponenteTrailing(int index) {
@@ -239,16 +250,16 @@ return Container(
   }
 
 Widget _buildSubtotal() {
-  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+  final fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
   final warehouse = fahrrarzt.warehouse;
 
   int totalPrice = 0;
 
-  //Calculate Komponente prices
-  for (int i = 0; i < _quantities.length; i++){
+  // Calculate Komponente prices
+  for (int i = 0; i < _quantities.length; i++) {
     var sparepart = warehouse!.keys.elementAt(i);
-    totalPrice += (_quantities[i]*sparepart.buyPrice!);
-  }  
+    totalPrice += (_quantities[i] * sparepart.buyPrice!);
+  }
 
   return Padding(
     padding: const EdgeInsets.all(10),
@@ -262,59 +273,106 @@ Widget _buildSubtotal() {
             fontFamily: 'Poppins',
           ),
         ),
-        _buildConfirmButton(),
+        _buildConfirmButton(), // Call _buildConfirmButton() directly here
       ],
     ),
   );
 }
 
 Widget _buildConfirmButton() {
-  Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
-  final warehouse = fahrrarzt.warehouse;
+  final fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+  final firestore = FirebaseFirestore.instance;
 
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      backgroundColor: _quantities.any((quantity) => quantity > 0)
-          ? primaryColor
-          : Colors.grey, 
-    ),
-    onPressed: _quantities.any((quantity) => quantity > 0)
-        ? () async {
-        for (int i = 0; i < _quantities.length; i++) {
-              var sparepart = warehouse!.keys.elementAt(i);
-              String sparepartName = sparepart.name.toString();
-              await updateFirestoreStock(_quantities[i], sparepartName);
-              //warehouse[sparepart] = warehouse[sparepart]! + _quantities[i]!;
+  String userId = widget.userId;
+  return FutureBuilder<DocumentSnapshot>(
+    future: firestore.collection('user').doc(userId).get(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return ElevatedButton(
+          onPressed: null,
+          child: Text('Confirm'),
+        );
+      }
 
-            
-          
-        }
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Ersatzteile erfolgreich bestellt'),
-              ),
-            );
+      if (snapshot.hasError) {
+        return ElevatedButton(
+          onPressed: null,
+          child: Text('Confirm'),
+        );
+      }
 
-            Future.delayed(const Duration(seconds: 0), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => BetreiberHome(
-                  userId: widget.userId,
-                )),
-              );
-            });
-          }
-        : null,
-    child: Text(
-      'Confirm',
-      style: TextStyle(
-        color: bgColor,
-        fontSize: 18,
-        fontFamily: 'Poppins',
-      ),
-    ),
+      if (!snapshot.hasData || !snapshot.data!.exists) {
+        return ElevatedButton(
+          onPressed: null,
+          child: Text('Confirm'),
+        );
+      }
+
+      Map<String, dynamic>? userData = snapshot.data!.data() as Map<String, dynamic>?;
+
+      String? role = userData?['role'];
+
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: _quantities.any((quantity) => quantity > 0) ? primaryColor : Colors.grey,
+        ),
+        onPressed: _quantities.any((quantity) => quantity > 0)
+            ? () async {
+                for (int i = 0; i < _quantities.length; i++) {
+                  if (_quantities[i] == 0) {
+                    continue;
+                  } else {
+                    var sparepart = fahrrarzt.warehouse!.keys.elementAt(i);
+                    String sparepartName = sparepart.name.toString();
+                    int totalStock = fahrrarzt.warehouse![sparepart]! + _quantities[i]!;
+                    await updateFirestoreStock(totalStock, sparepartName);
+                  }
+                }
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Ersatzteile erfolgreich bestellt'),
+                  ),
+                );
+
+                if (role == 'Betreiber') {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BetreiberHome(
+                        userId: widget.userId,
+                      ),
+                    ),
+                    (route) => false,
+                  );
+                } else if (role == 'Techniker') {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TechnikerHome(
+                        userId: widget.userId,
+                      ),
+                    ),
+                    (route) => false,
+                  );
+                }
+              }
+            : null,
+        child: Text(
+          'Confirm',
+          style: TextStyle(
+            color: bgColor,
+            fontSize: 18,
+            fontFamily: 'Poppins',
+          ),
+        ),
+      );
+    },
   );
 }
+
+
+
 
 Future<void> updateFirestoreStock(int stock, String sparepartName) async{
   final firestore = FirebaseFirestore.instance;

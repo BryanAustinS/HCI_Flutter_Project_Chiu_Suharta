@@ -33,34 +33,35 @@ class Fahrrarzt {
   };
 }
 
-class FahrrarztProvider {
-  static final FahrrarztProvider _instance = FahrrarztProvider._internal();
-
-  factory FahrrarztProvider() {
-    return _instance;
-  }
-
-  FahrrarztProvider._internal();
-
+class FahrrarztProvider with ChangeNotifier {
   Fahrrarzt _fahrrarzt = Fahrrarzt();
 
   Fahrrarzt get fahrrarzt => _fahrrarzt;
 
-  Future<void> updateWarehouseFromFirestore() async {
-    final firestore = FirebaseFirestore.instance;
-    final doc = await firestore.collection('stock').doc('BlQHxe7XnhytZnMzDxNW').get();
+  FahrrarztProvider() {
+    _initFirestoreListener();
+  }
 
-    if (doc.exists) {
-      final data = doc.data()!;
-      _fahrrarzt.warehouse?.update(Fahrrarzt.brakes, (value) => data['Brakes']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.chains, (value) => data['Chains']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.saddle, (value) => data['Saddle']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.tyres, (value) => data['Tyres']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.spokes, (value) => data['Spokes']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.bikeLocks, (value) => data['Bike locks']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.lights, (value) => data['Lights']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.luggageRacks, (value) => data['Luggage racks']);
-      _fahrrarzt.warehouse?.update(Fahrrarzt.bikePumps, (value) => data['Bike pumps']);
-    }
+  void _initFirestoreListener() {
+    FirebaseFirestore.instance
+        .collection('stock')
+        .doc('BlQHxe7XnhytZnMzDxNW')
+        .snapshots()
+        .listen((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data();
+        _fahrrarzt.warehouse?.update(Fahrrarzt.brakes, (value) => data?['Brakes']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.chains, (value) => data?['Chains']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.saddle, (value) => data?['Saddle']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.tyres, (value) => data?['Tyres']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.spokes, (value) => data?['Spokes']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.bikeLocks, (value) => data?['Bike locks']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.lights, (value) => data?['Lights']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.luggageRacks, (value) => data?['Luggage racks']);
+        _fahrrarzt.warehouse?.update(Fahrrarzt.bikePumps, (value) => data?['Bike pumps']);
+
+        notifyListeners(); // Notify listeners on data change
+      }
+    });
   }
 }

@@ -11,7 +11,8 @@ void main() async {
   await Firebase.initializeApp();
 
   final fahrrarztProvider = FahrrarztProvider();
-  await fahrrarztProvider.updateWarehouseFromFirestore();
+
+  Provider.debugCheckInvalidValueType = null;
 
   runApp(MainApp(fahrrarztProvider: fahrrarztProvider));
 }
