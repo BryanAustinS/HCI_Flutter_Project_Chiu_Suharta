@@ -4,16 +4,23 @@ import 'package:hci_hda_chiu_suharta/page/login/welcome_screen.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-
 import 'localization/locales.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MainApp());
+
+  final fahrrarztProvider = FahrrarztProvider();
+  await fahrrarztProvider.updateWarehouseFromFirestore();
+
+  runApp(MainApp(fahrrarztProvider: fahrrarztProvider));
 }
 
 class MainApp extends StatefulWidget {
+  final FahrrarztProvider fahrrarztProvider;
+
+  MainApp({required this.fahrrarztProvider});
+
   @override
   State<MainApp> createState() => _MainAppState();
 }
@@ -32,7 +39,7 @@ class _MainAppState extends State<MainApp> {
     return MultiProvider(
       providers: [
         Provider<FahrrarztProvider>(
-          create: (_) => FahrrarztProvider(),
+          create: (_) => widget.fahrrarztProvider,
         ),
       ],
       child: MaterialApp(
@@ -44,13 +51,12 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
-  void configureLocalization(){
+  void configureLocalization() {
     localization.init(mapLocales: LOCALES, initLanguageCode: "de");
     localization.onTranslatedLanguage = onTranslateLanguage;
   }
 
-  void onTranslateLanguage(Locale? locale){
-    setState(() {
-    });
+  void onTranslateLanguage(Locale? locale) {
+    setState(() {});
   }
 }

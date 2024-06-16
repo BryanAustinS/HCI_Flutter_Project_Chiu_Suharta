@@ -3,6 +3,8 @@ import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:hci_hda_chiu_suharta/page/home/betreiber_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 Color primaryColor = lightColorScheme.primary;
@@ -246,10 +248,7 @@ Widget _buildSubtotal() {
   for (int i = 0; i < _quantities.length; i++){
     var sparepart = warehouse!.keys.elementAt(i);
     totalPrice += (_quantities[i]*sparepart.buyPrice!);
-  }
-
-  //Calculate zubehoer prices
-  
+  }  
 
   return Padding(
     padding: const EdgeInsets.all(10),
@@ -280,15 +279,15 @@ Widget _buildConfirmButton() {
           : Colors.grey, 
     ),
     onPressed: _quantities.any((quantity) => quantity > 0)
-        ? () {
+        ? () async {
         for (int i = 0; i < _quantities.length; i++) {
-          var sparepart = warehouse!.keys.elementAt(i);
-          if (warehouse[sparepart] != null) {
-            if (_quantities[i] != null && warehouse[sparepart] != null) {
-              warehouse[sparepart] = warehouse[sparepart]! + _quantities[i]!;
+              var sparepart = warehouse!.keys.elementAt(i);
+              String sparepartName = sparepart.name.toString();
+              await updateFirestoreStock(_quantities[i], sparepartName);
+              //warehouse[sparepart] = warehouse[sparepart]! + _quantities[i]!;
 
-            }
-          }
+            
+          
         }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -315,6 +314,14 @@ Widget _buildConfirmButton() {
       ),
     ),
   );
+}
+
+Future<void> updateFirestoreStock(int stock, String sparepartName) async{
+  final firestore = FirebaseFirestore.instance;
+
+  await firestore.collection('stock').doc('BlQHxe7XnhytZnMzDxNW').update({
+    '$sparepartName' : stock
+  });
 }
 
 }
