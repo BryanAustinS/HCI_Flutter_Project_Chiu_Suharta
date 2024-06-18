@@ -21,7 +21,7 @@ class EinnahmeVerfolgen extends StatefulWidget {
 
 class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  List<bool> _isExpandedList = [];
+  List<bool> _isExpandedList = List<bool>.generate(20, (_) => false); 
   var _einnahme = 0;
   final _tabs = [
     Tab(text: 'Einnahme'),
@@ -86,111 +86,159 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
   }
 
   Widget _buildEinnahmeList() {
-    final firestore = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
 
-    return FutureBuilder<QuerySnapshot>(
-      future: firestore.collection('booking').get(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
+  return FutureBuilder<QuerySnapshot>(
+    future: firestore.collection('booking').get(),
+    builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      }
 
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('No bookings found.'));
-        }
+      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        return Center(child: Text('No bookings found.'));
+      }
 
-        final bookings = snapshot.data!.docs;
-        _isExpandedList = List.generate(bookings.length, (_) => false); // Initialize expansion state for each item
+      final bookings = snapshot.data!.docs;
 
-        return ListView.builder(
-          itemCount: bookings.length,
-          itemBuilder: (context, index) {
-            final booking = bookings[index];
-            return _buildEinnahmeTrailing(
-              booking.id,
-              booking['price'],
-              booking['userId'],
-              List<String>.from(booking['komponente'].map((item) => item['name'])),
-              index,
-            );
-          },
-        );
-      },
-    );
+      return ListView.builder(
+        itemCount: bookings.length,
+        itemBuilder: (context, index) {
+          final booking = bookings[index];
+          return _buildEinnahmeTrailing(
+            booking.id,
+            booking['price'],
+            booking['userId'],
+            List<String>.from(booking['komponente'].map((item) => item['name'])),
+            _isExpandedList,
+            index,
+          );
+        },
+      );
+    },
+  );
+}
+
+
+Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<String> ersatzteile, List<bool> isExpandedList, int index) {
+  double containerHeight = 0.0;
+
+  if (isExpandedList.isNotEmpty && isExpandedList.length > index && isExpandedList[index]) {
+    int ersatzteileCount = ersatzteile.length;
+    if (ersatzteileCount >= 1 && ersatzteileCount <= 4) {
+      containerHeight = 175.0;
+    } else if (ersatzteileCount >= 5 && ersatzteileCount <= 8) {
+      containerHeight = 225.0;
+    } else if (ersatzteileCount >= 9 && ersatzteileCount <= 12) {
+      containerHeight = 300.0;
+    }
   }
 
-  Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<String> ersatzteile, int index) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _isExpandedList[index] = !_isExpandedList[index];
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: bgColor),
-              borderRadius: BorderRadius.circular(5)
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Buchung ID',
-                      style: TextStyle(fontSize: 12, color: Colors.black),
-                    ),
-                    Text(
-                      bookingId,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Price',
-                      style: TextStyle(fontSize: 12, color: Colors.black),
-                    ),
-                    Text(
-                      '\$$price',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Icon(
-                  _isExpandedList[index] ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                ),
-              ],
-            ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      GestureDetector(
+        onTap: () {
+          setState(() {
+            if (isExpandedList.isNotEmpty && isExpandedList.length > index) {
+              isExpandedList[index] = !isExpandedList[index];
+            }
+          });
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: bgColor),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Buchung ID',
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                  ),
+                  Text(
+                    bookingId,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'Price',
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                  ),
+                  Text(
+                    '\$$price',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Icon(
+                isExpandedList.isNotEmpty && isExpandedList.length > index && isExpandedList[index]
+                    ? Icons.arrow_drop_up
+                    : Icons.arrow_drop_down,
+              ),
+            ],
           ),
         ),
-        AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          height: _isExpandedList[index] ? 100.0 : 0.0,
-          child: _isExpandedList[index]
-              ? Padding(
-                padding: const EdgeInsets.fromLTRB(18, 0, 0, 0),
-                child: Column(
+      ),
+      AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        height: containerHeight,
+        child: isExpandedList.isNotEmpty && isExpandedList.length > index && isExpandedList[index]
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200], // Grey background color
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
+                  padding: EdgeInsets.all(12),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Kunde ID: $userId'),
-                      Text('Ersatzteile: ${ersatzteile.join(', ')}'),
+                      Row(
+                        children: [
+                          Text('Kunde ID:', style: TextStyle(fontSize: 14)),
+                          SizedBox(width: 8),
+                          Text(
+                            '$userId',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Text('Ersatzteile:', style: TextStyle(fontSize: 14)),
+                      SizedBox(height: 4),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: ersatzteile.asMap().entries.map((entry) {
+                          int idx = entry.key;
+                          String ersatzteil = entry.value;
+                          return Text(
+                            '- $ersatzteil',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          );
+                        }).toList(),
+                      ),
                     ],
                   ),
+                ),
               )
-              : Container(),
-        ),
-      ],
-    );
-  }
+            : Container(),
+      ),
+    ],
+  );
+}
+
 
   Widget _buildAusgabeList() {
     Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
