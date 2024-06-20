@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolgen.dart';
 import 'package:hci_hda_chiu_suharta/page/features/betreiber_einnahme_verfolgen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
+import 'package:logger/logger.dart';
+
+import '../profile/profile_page.dart';
 
 class BetreiberHome extends StatefulWidget {
   final String userId;
@@ -12,7 +15,7 @@ class BetreiberHome extends StatefulWidget {
 }
 
 class _BetreiberHomeState extends State<BetreiberHome> {
-
+  var logger = Logger();
   @override
   Widget build(BuildContext context) {
     Color primaryColor = lightColorScheme.primary;
@@ -36,9 +39,23 @@ class _BetreiberHomeState extends State<BetreiberHome> {
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: Image.asset('assets/images/avatar_profile.png'),
             onPressed: () {
-              //Navigate to logout page
+              var profilePicture =
+              Image.asset('assets/images/avatar_profile.png');
+              logger.t('Profile button clicked with ' +
+                  widget.userId +
+                  ' as userId');
+              //Navigate to Profile Page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    profilePicture: profilePicture,
+                    userId: widget.userId,
+                  ),
+                ),
+              );
             },
             color: bgColor,
           ),
