@@ -569,7 +569,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                           if (additionalSpareParts[i]['confirmed'] == false)
                             CheckboxListTile(
                               title: Text(
-                                  '${additionalSpareParts[i]['name']} - \$${additionalSpareParts[i]['price']}'),
+                                  '${additionalSpareParts[i]['name']} - \€${additionalSpareParts[i]['price']}'),
                               value: selectedParts[i],
                               onChanged: (bool? value) {
                                 setState(() {

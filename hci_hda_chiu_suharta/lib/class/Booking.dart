@@ -23,13 +23,6 @@ class Booking{
     required this.userId,
   });
 
-  void addSpareparts(){
-
-  }
-
-  void calculatePrice(){
-
-  }
 
   factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(

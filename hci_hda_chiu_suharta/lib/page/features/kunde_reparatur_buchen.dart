@@ -112,7 +112,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                 title: Row(
                   children: [
                     Expanded(child: Text(sparepart.name!)),
-                    Text('\$${sparepart.sellPrice!.toStringAsFixed(2)}'),
+                    Text('\€${sparepart.sellPrice!.toStringAsFixed(2)}'),
                   ],
                 ),
                 trailing: _buildKomponenteTrailing(index),
@@ -146,7 +146,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                 title: Row(
                   children: [
                     Expanded(child: Text(sparepart.name!)),
-                    Text('\$${sparepart.sellPrice!.toStringAsFixed(2)}'),
+                    Text('\€${sparepart.sellPrice!.toStringAsFixed(2)}'),
                   ],
                 ),
                 trailing: _buildZubehoerTrailing(index),
@@ -448,7 +448,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Subtotal: \$ $totalPrice',
+            'Subtotal: \€ $totalPrice',
             style: TextStyle(
               fontSize: 18,
               fontFamily: 'Poppins',

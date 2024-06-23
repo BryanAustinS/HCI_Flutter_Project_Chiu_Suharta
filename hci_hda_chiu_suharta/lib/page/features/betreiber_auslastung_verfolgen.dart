@@ -128,7 +128,7 @@ class _AuslastungVerfolgenState extends State<AuslastungVerfolgen> with SingleTi
                           ),
                         ],
                       ),
-                      Text('\$${sparepart.buyPrice?.toStringAsFixed(2) ?? '0.00'}'),
+                      Text('\€${sparepart.buyPrice?.toStringAsFixed(2) ?? '0.00'}'),
                     ],
                   ),
                   trailing: _buildKomponenteTrailing(index),
@@ -177,7 +177,7 @@ Widget _buildZubehoerList() {
                           ),
                         ],
                       ),
-                      Text('\$${sparepart.buyPrice?.toStringAsFixed(2) ?? '0.00'}'),
+                      Text('\€${sparepart.buyPrice?.toStringAsFixed(2) ?? '0.00'}'),
                     ],
                   ),
                   trailing: _buildZubehoerTrailing(tabIndex),
@@ -267,7 +267,7 @@ Widget _buildSubtotal() {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Subtotal: \$ $totalPrice',
+          'Subtotal: \€ $totalPrice',
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Poppins',

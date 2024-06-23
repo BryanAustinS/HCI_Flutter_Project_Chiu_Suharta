@@ -27,6 +27,21 @@ mixin LocaleData{
   static const String have_account = "have_account";
   static const String enter_full_name = "enter_full_name";
 
+  //Home page
+  static const String einnahme_verfolgen = "einnahme_verfolgen";
+
+  //Betreiber Einnahme verfolgen
+  static const String einnahme = "Einnahme";
+  static const String ausgabe = "Ausgabe";
+  static const String price = "price";
+  static const String kunde_id = "Kunde ID";
+  static const String ersatzteile = "Ersatzteile";
+  static const String amount = "Amount";
+  static const String total = "Total";
+  static const String betrag = "Betrag";
+
+  
+
   static const Map<String, dynamic> EN = {
     kunde_button1: "Repair booking",
     kunde_button2: "Track orders",
@@ -47,6 +62,19 @@ mixin LocaleData{
     agree_personal_data: "I agree to processing personal data",
     have_account: "Already have an account?",
     enter_full_name: "Enter your full name",
+
+    //Home pages
+    einnahme_verfolgen: "Track income",
+
+    //Betreiber Einnahme verfolgen
+    einnahme: "Income",
+    ausgabe: "Expenses",
+    kunde_id: "Customer ID",
+    price: "Price",
+    ersatzteile: "Spare parts",
+    amount: "Amount",
+    total: "Total",
+    betrag: "Net income",
   };
 
   static const Map<String, dynamic> DE = {
@@ -69,5 +97,22 @@ mixin LocaleData{
     agree_personal_data: "Ich stimme der Verarbeitung personenbezogener Daten zu",
     have_account: "Haben Sie bereits ein Konto?",
     enter_full_name: "Geben Sie Ihren vollständigen Namen ein",
+
+    //Home pages
+    einnahme_verfolgen: "Einnahme verfolgen",
+
+    //Betreiber Einnahme verfolgen
+    einnahme: "Einnahme",
+    ausgabe: "Ausgabe",
+    price: "Preis",
+    kunde_id: "Kunde ID",
+    ersatzteile: "Ersatzteile",
+    amount: "Anzahl",
+    total: "Summe",
+    betrag: "Betrag",
+
+
+
+
   };
 }

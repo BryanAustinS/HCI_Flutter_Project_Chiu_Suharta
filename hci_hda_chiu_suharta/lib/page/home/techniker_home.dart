@@ -118,57 +118,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-
-              // Auslastung ansehen
-              SizedBox(
-                height: 275,
-                width: 275,
-                child: InkWell(
-                  onTap: () {
-                    logger.t('Ersatzteile ansehen button clicked');
-                    // Navigate to page TechnikerAuslastungAnsehen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: ((context) => AuslastungVerfolgen(
-                        userId: widget.userId,
-                      )))
-                      );
-
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.warehouse,
-                          color: primaryColor,
-                          size: 100.0,
-                        ),
-                        const SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 30.0),
-                            child: Text(
-                              'Ersatzteile ansehen',
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontFamily: 'Poppins',
-                                color: primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 20),               
             ],
           ),
         ),
