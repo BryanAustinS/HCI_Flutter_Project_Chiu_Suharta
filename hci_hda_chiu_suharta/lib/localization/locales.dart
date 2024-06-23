@@ -42,6 +42,22 @@ mixin LocaleData{
   static const String confirm_text2 = "confirm text2";
   static const String cancel = "cancel";
 
+  //Auftraege verfolgen
+  static const String buchung_erstellt = "buchung erstellt";
+  static const String buchung_erstellt2 = "buchung erstellt 2";
+  static const String buchung_bestatigt = "buchung bestatigt";
+  static const String buchung_bestatigt2 = "buchung bestatigt 2";
+  static const String in_bearbeitung = "in bearbeitung";
+  static const String in_bearbeitung2 = "in bearbeitung2";
+  static const String fertig = "fertig";
+  static const String buchung_verfolgen = "Buchung verfolgen";
+  static const String input_bookingnum = "input booking num";
+  static const String ihreBuchung = "Ihre Buchung";
+  static const String finish_booking = "finish booking";
+  static const String finish_booking_confirm = "finish booking confirm";
+  static const String confirm_parts = "confirm parts";
+  static const String confirm_parts2 = "confirm parts 2";
+  
   //Betreiber Einnahme verfolgen
   static const String einnahme = "Einnahme";
   static const String ausgabe = "Ausgabe";
@@ -90,6 +106,21 @@ mixin LocaleData{
     cancel: "Cancel",
     confirm_text2: "Repair successfully booked",
 
+    //Auftraege verfolgen
+    buchung_erstellt: "Booking created",
+    buchung_erstellt2: "Your booking has been created",
+    buchung_bestatigt: "Booking confirmed",
+    buchung_bestatigt2: "Your booking has been confirmed",
+    in_bearbeitung: "In Processing",
+    in_bearbeitung2: "Your bicycle is currently being repaired",
+    fertig: "Finish",
+    buchung_verfolgen: "Track your Booking",
+    input_bookingnum: "Input your booking number",
+    ihreBuchung: "Your booking",
+    finish_booking: "Finish Booking",
+    finish_booking_confirm: "Are you sure you want to finish this booking?",
+    confirm_parts: "Confirm parts",
+    confirm_parts2: "Confirm additional Spareparts",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Income",
@@ -128,7 +159,7 @@ mixin LocaleData{
     ersatzteile_verfolgen: "Ersatzteile verfolgen",
 
     //Reparatur buchen
-    subtotal: "Zwischensumme",
+    subtotal: "Summe",
     front: "Vorderseite",
     rear: "Rückseite",
     confirm: "Bestätigen",
@@ -137,8 +168,21 @@ mixin LocaleData{
     cancel: "Abbrechen",
     confirm_text2: "Reparatur erfolgreich gebucht",
 
-
-
+    //Auftraege verfolgen
+    buchung_erstellt: "Buchung erstellt",
+    buchung_erstellt2: "Ihre Buchung wurde erstellt",
+    buchung_bestatigt: "Booking bestätigt",
+    buchung_bestatigt2: "Ihr Buchung wurde bestätigt",
+    in_bearbeitung: "In Bearbeitung",
+    in_bearbeitung2: "Ihr Fahrrad wird gerade repariert",
+    fertig: "Fertig",
+    buchung_verfolgen: "Ihre Buchung verfolgen",
+    input_bookingnum: "Buchungsnummer eingeben",
+    ihreBuchung: "Ihre Buchung",
+    finish_booking: "Buchung beenden",
+    finish_booking_confirm: "Möchten Sie diese Buchung wirklich beenden?",
+    confirm_parts: "Ersatzteile bestätigen",
+    confirm_parts2: "Zusätzliche Ersatzteile bestätigen",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Einnahme",

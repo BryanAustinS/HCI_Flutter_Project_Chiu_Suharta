@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
+import 'package:hci_hda_chiu_suharta/localization/locales.dart';
 import 'package:lottie/lottie.dart';
 import 'package:logger/logger.dart';
 
@@ -38,38 +40,38 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
     return [
       StepperData(
         title: StepperText(
-          "Buchung erstellt",
+          LocaleData.buchung_erstellt.getString(context),
           textStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
-        subtitle: StepperText("Ihre Buchung wurde erstellt"),
+        subtitle: StepperText(LocaleData.buchung_erstellt2.getString(context)),
         iconWidget: _initialIcon(),
       ),
       StepperData(
           title: StepperText(
-            "Buchung Bestätigt",
+            LocaleData.buchung_bestatigt.getString(context),
             textStyle: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
           ),
-          subtitle: StepperText("Ihre Buchung wurde bestätigt"),
+          subtitle: StepperText(LocaleData.buchung_bestatigt2.getString(context)),
           iconWidget: _initialIcon()),
       StepperData(
           title: StepperText(
-            "In Bearbeitung",
+            LocaleData.in_bearbeitung.getString(context),
             textStyle: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
           ),
-          subtitle: StepperText("Ihre Buchung ist in Bearbeitung"),
+          subtitle: StepperText(LocaleData.in_bearbeitung2.getString(context)),
           iconWidget: _initialIcon()),
       StepperData(
         title: StepperText(
-          "Fertig",
+          LocaleData.fertig.getString(context),
           textStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
@@ -113,7 +115,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
               Padding(
                 padding: const EdgeInsets.only(left: 30.0),
                 child: Text(
-                  "Buchungs verfolgen: ",
+                  "${LocaleData.buchung_verfolgen.getString(context)}: ",
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -141,7 +143,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
-                          hintText: "Buchungsnummer eingeben",
+                          hintText: LocaleData.input_bookingnum.getString(context),
                         ),
                       ),
                     ),
@@ -177,7 +179,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                 child: Row(
                   children: [
                     Text(
-                      "Ihre Buchung: ",
+                      LocaleData.ihreBuchung.getString(context),
                       style: TextStyle(
                         fontSize: 25,
                         fontFamily: 'Montserrat',
@@ -232,8 +234,8 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                                   onPressed: () {
                                     _showFinishDialog();
                                   },
-                                  child: const Text(
-                                    'Finish Booking',
+                                  child: Text(
+                                    LocaleData.finish_booking.getString(context),
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -444,22 +446,22 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              title: const Text('Finish Booking'),
-              content: const Text(
-                  'Are you sure you want to finish and delete this booking?'),
+              title: Text(LocaleData.finish_booking.getString(context)),
+              content: Text(
+                  LocaleData.finish_booking_confirm.getString(context)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Cancel'),
+                  child: Text(LocaleData.cancel.getString(context)),
                 ),
                 TextButton(
                   onPressed: () {
                     _deleteBooking();
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Confirm'),
+                  child: Text(LocaleData.confirm.getString(context)),
                 )
               ]);
         });
@@ -498,8 +500,8 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
           onPressed: () {
             _showConfirmPartsDialog();
           },
-          child: const Text(
-            'Confirm Parts',
+          child: Text(
+            LocaleData.confirm_parts.getString(context),
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -561,7 +563,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
             return StatefulBuilder(
               builder: (context, setState) {
                 return AlertDialog(
-                  title: const Text('Confirm Additional Spare Parts'),
+                  title: Text(LocaleData.confirm_parts2.getString(context)),
                   content: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -585,14 +587,14 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Cancel'),
+                      child: Text(LocaleData.cancel.getString(context)),
                     ),
                     TextButton(
                       onPressed: () {
                         _confirmSpareParts(selectedParts, additionalSpareParts);
                         Navigator.pop(context);
                       },
-                      child: const Text('Confirm'),
+                      child: Text(LocaleData.confirm.getString(context)),
                     ),
                   ],
                 );
