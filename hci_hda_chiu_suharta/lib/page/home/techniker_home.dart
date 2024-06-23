@@ -3,7 +3,8 @@ import 'package:hci_hda_chiu_suharta/page/features/techniker_auftrage_ansehen.da
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
 import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolgen.dart';
-
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hci_hda_chiu_suharta/localization/locales.dart';
 import '../profile/profile_page.dart';
 
 class TechnikerHome extends StatefulWidget {
@@ -104,7 +105,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Aufträge ansehen',
+                              LocaleData.auftraege_ansehen.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 fontFamily: 'Poppins',

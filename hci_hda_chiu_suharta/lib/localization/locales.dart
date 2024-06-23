@@ -29,6 +29,18 @@ mixin LocaleData{
 
   //Home page
   static const String einnahme_verfolgen = "einnahme_verfolgen";
+  static const String ersatzteile_verfolgen = "ersatzteile_verfolgen";
+  static const String auftraege_ansehen = "auftraege_ansehen";
+
+  //Reparatur buchen
+  static const String subtotal = "subtotal";
+  static const String front = "front";
+  static const String rear = "rear";
+  static const String confirm = "confirm";
+  static const String confirm_booking = "Confirm booking";
+  static const String confirm_text = "confirm text";
+  static const String confirm_text2 = "confirm text2";
+  static const String cancel = "cancel";
 
   //Betreiber Einnahme verfolgen
   static const String einnahme = "Einnahme";
@@ -65,6 +77,19 @@ mixin LocaleData{
 
     //Home pages
     einnahme_verfolgen: "Track income",
+    ersatzteile_verfolgen: "Manage spareparts",
+    auftraege_ansehen: "View Bookings",
+
+    //Reparatur buchen
+    subtotal: "Subtotal",
+    front: "Front",
+    rear: "Rear",
+    confirm: "Confirm",
+    confirm_booking: "Confirm Booking",
+    confirm_text: "Are you sure you want to book this repair?",
+    cancel: "Cancel",
+    confirm_text2: "Repair successfully booked",
+
 
     //Betreiber Einnahme verfolgen
     einnahme: "Income",
@@ -100,6 +125,20 @@ mixin LocaleData{
 
     //Home pages
     einnahme_verfolgen: "Einnahme verfolgen",
+    ersatzteile_verfolgen: "Ersatzteile verfolgen",
+
+    //Reparatur buchen
+    subtotal: "Zwischensumme",
+    front: "Vorderseite",
+    rear: "Rückseite",
+    confirm: "Bestätigen",
+    confirm_booking: "Buchung bestätigen",
+    confirm_text: "Möchten Sie diese Reparatur wirklich buchen?",
+    cancel: "Abbrechen",
+    confirm_text2: "Reparatur erfolgreich gebucht",
+
+
+
 
     //Betreiber Einnahme verfolgen
     einnahme: "Einnahme",
