@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
+import 'package:hci_hda_chiu_suharta/localization/locales.dart';
 import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +114,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                 title: Row(
                   children: [
                     Expanded(child: Text(sparepart.name!)),
-                    Text('\$${sparepart.sellPrice!.toStringAsFixed(2)}'),
+                    Text('\€${sparepart.sellPrice!.toStringAsFixed(2)}'),
                   ],
                 ),
                 trailing: _buildKomponenteTrailing(index),
@@ -146,7 +148,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                 title: Row(
                   children: [
                     Expanded(child: Text(sparepart.name!)),
-                    Text('\$${sparepart.sellPrice!.toStringAsFixed(2)}'),
+                    Text('\€${sparepart.sellPrice!.toStringAsFixed(2)}'),
                   ],
                 ),
                 trailing: _buildZubehoerTrailing(index),
@@ -225,7 +227,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Front',
+                LocaleData.front.getString(context),
                 style: TextStyle(color: Colors.black),
               ),
               Padding(
@@ -247,7 +249,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Rear',
+                LocaleData.rear.getString(context),
                 style: TextStyle(color: Colors.black),
               ),
               Padding(
@@ -279,7 +281,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Front',
+                LocaleData.front.getString(context),
                 style: TextStyle(color: Colors.black),
               ),
               Padding(
@@ -301,7 +303,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Rear',
+                LocaleData.rear.getString(context),
                 style: TextStyle(color: Colors.black),
               ),
               Padding(
@@ -333,7 +335,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Front',
+                LocaleData.front.getString(context),
                 style: TextStyle(color: Colors.black),
               ),
               Padding(
@@ -355,7 +357,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Rear',
+                LocaleData.rear.getString(context),
                 style: TextStyle(color: Colors.black),
               ),
               Padding(
@@ -448,7 +450,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Subtotal: \$ $totalPrice',
+            '${LocaleData.subtotal.getString(context)}: \€ $totalPrice',
             style: TextStyle(
               fontSize: 18,
               fontFamily: 'Poppins',
@@ -485,7 +487,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
             }
           : null,
       child: Text(
-        'Confirm',
+        LocaleData.confirm.getString(context),
         style: TextStyle(
           color: bgColor,
           fontSize: 18,
@@ -500,17 +502,17 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Confirm Booking'),
-              content: Text('Are you sure you want to book this repair?'),
+              title: Text(LocaleData.confirm_booking.getString(context)),
+              content: Text(LocaleData.confirm_text.getString(context)),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Cancel'),
+                  child: Text(LocaleData.cancel.getString(context)),
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
                 ),
                 TextButton(
-                  child: Text('Confirm'),
+                  child: Text(LocaleData.front.getString(context)),
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
@@ -590,8 +592,8 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
     };
     await booking.addUserBooking(userBookingMap);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Reparatur erfolgreich gebucht'),
+      SnackBar(
+        content: Text(LocaleData.confirm_text2.getString(context)),
       ),
     );
   }

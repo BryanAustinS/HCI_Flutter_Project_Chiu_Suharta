@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:hci_hda_chiu_suharta/class/Booking.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:hci_hda_chiu_suharta/page/home/betreiber_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
+import '../../localization/locales.dart';
+import 'package:logger/logger.dart';
+
+
 
 Color primaryColor = lightColorScheme.primary;
 Color bgColor = lightColorScheme.background;
@@ -21,17 +26,25 @@ class EinnahmeVerfolgen extends StatefulWidget {
 
 class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
+
+    var logger = Logger();
+
+
   List<bool> _isExpandedList = List<bool>.generate(20, (_) => false); 
   var _einnahme = 0;
   final _tabs = [
-    Tab(text: 'Einnahme'),
-    Tab(text: 'Ausgabe'),
+    Tab(text: LocaleData.einnahme),
+    Tab(text: LocaleData.ausgabe),
   ];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: _tabs.length, vsync: this);
+
+
+    
   }
 
   @override
@@ -112,6 +125,7 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
             List<String>.from(booking['komponente'].map((item) => item['name'])),
             _isExpandedList,
             index,
+            booking['status'],
           );
         },
       );
@@ -120,18 +134,20 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
 }
 
 
-Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<String> ersatzteile, List<bool> isExpandedList, int index) {
+Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<String> ersatzteile, List<bool> isExpandedList, int index, String status) {
   double containerHeight = 0.0;
 
   if (isExpandedList.isNotEmpty && isExpandedList.length > index && isExpandedList[index]) {
     int ersatzteileCount = ersatzteile.length;
-    if (ersatzteileCount >= 1 && ersatzteileCount <= 4) {
-      containerHeight = 175.0;
-    } else if (ersatzteileCount >= 5 && ersatzteileCount <= 8) {
-      containerHeight = 225.0;
-    } else if (ersatzteileCount >= 9 && ersatzteileCount <= 12) {
+    if (ersatzteileCount >= 1 && ersatzteileCount <= 3) {
+      containerHeight = 200.0;
+    } else if (ersatzteileCount >= 4 && ersatzteileCount <= 6) {
+      containerHeight = 250.0;
+    } else if (ersatzteileCount >= 7 && ersatzteileCount <= 19) {
       containerHeight = 300.0;
-    }
+    } else if (ersatzteileCount >= 10 && ersatzteileCount <= 12) {
+      containerHeight = 350.0;
+  }
   }
 
   return Column(
@@ -158,7 +174,7 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Buchung ID',
+                    LocaleData.buchung_id.getString(context),
                     style: TextStyle(fontSize: 12, color: Colors.black),
                   ),
                   Text(
@@ -172,11 +188,11 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'Price',
+                    LocaleData.price.getString(context),
                     style: TextStyle(fontSize: 12, color: Colors.black),
                   ),
                   Text(
-                    '\$$price',
+                    '\€$price',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -207,7 +223,7 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                     children: [
                       Row(
                         children: [
-                          Text('Kunde ID:', style: TextStyle(fontSize: 14)),
+                          Text(LocaleData.kunde_id.getString(context), style: TextStyle(fontSize: 14)),
                           SizedBox(width: 8),
                           Text(
                             '$userId',
@@ -216,7 +232,16 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                         ],
                       ),
                       SizedBox(height: 8),
-                      Text('Ersatzteile:', style: TextStyle(fontSize: 14)),
+                      Row(
+                        children: [
+                          Text('Status: ', style: TextStyle(fontSize: 14)),
+                          SizedBox(width: 8),
+                          Text('$status', 
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Text(LocaleData.ersatzteile.getString(context), style: TextStyle(fontSize: 14)),
                       SizedBox(height: 4),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +292,7 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                           ),
                           SizedBox(height: 4), 
                           Text(
-                            'Amount: $quantity',
+                            '${LocaleData.amount.getString(context)}: $quantity',
                             style: TextStyle(fontSize: 14),
                           ),
                         ],
@@ -277,12 +302,12 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'Total:',
+                          '${LocaleData.total.getString(context)}:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 4), 
                         Text(
-                          '\$${totalPrice.toStringAsFixed(2)}',
+                          '\€${totalPrice.toStringAsFixed(2)}',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -345,7 +370,7 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Einnahme: \$ $_einnahme',
+                '${LocaleData.einnahme.getString(context)}: \€ $_einnahme',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Poppins',
@@ -362,7 +387,7 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Ausgabe:   \$ $ausgabe',
+                '${LocaleData.ausgabe.getString(context)}: \€ $ausgabe',
                 style: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Poppins',
@@ -377,14 +402,14 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
               Row(
                 children: [
                   Text(
-                    'Betrag:   ',
+                    '${LocaleData.betrag.getString(context)}:   ',
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Poppins',
                     ),
                   ),
                   Text(
-                    '\$ $betrag',           
+                    '\€ $betrag',           
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Poppins',

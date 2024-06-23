@@ -3,7 +3,8 @@ import 'package:hci_hda_chiu_suharta/page/features/techniker_auftrage_ansehen.da
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
 import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolgen.dart';
-
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hci_hda_chiu_suharta/localization/locales.dart';
 import '../profile/profile_page.dart';
 
 class TechnikerHome extends StatefulWidget {
@@ -104,7 +105,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Aufträge ansehen',
+                              LocaleData.auftraege_ansehen.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 fontFamily: 'Poppins',
@@ -118,57 +119,7 @@ class _TechnikerHomeState extends State<TechnikerHome> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-
-              // Auslastung ansehen
-              SizedBox(
-                height: 275,
-                width: 275,
-                child: InkWell(
-                  onTap: () {
-                    logger.t('Ersatzteile ansehen button clicked');
-                    // Navigate to page TechnikerAuslastungAnsehen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: ((context) => AuslastungVerfolgen(
-                        userId: widget.userId,
-                      )))
-                      );
-
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.warehouse,
-                          color: primaryColor,
-                          size: 100.0,
-                        ),
-                        const SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 30.0),
-                            child: Text(
-                              'Ersatzteile ansehen',
-                              style: TextStyle(
-                                fontSize: 23,
-                                fontFamily: 'Poppins',
-                                color: primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 20),               
             ],
           ),
         ),

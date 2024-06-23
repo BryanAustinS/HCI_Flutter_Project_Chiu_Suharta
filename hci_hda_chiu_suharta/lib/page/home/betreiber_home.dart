@@ -3,8 +3,10 @@ import 'package:hci_hda_chiu_suharta/page/features/betreiber_auslastung_verfolge
 import 'package:hci_hda_chiu_suharta/page/features/betreiber_einnahme_verfolgen.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:logger/logger.dart';
-
 import '../profile/profile_page.dart';
+import '../../localization/locales.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+
 
 class BetreiberHome extends StatefulWidget {
   final String userId;
@@ -21,6 +23,8 @@ class _BetreiberHomeState extends State<BetreiberHome> {
     Color primaryColor = lightColorScheme.primary;
     Color bgColor = lightColorScheme.background;
     Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    var logger = Logger();
+
     return Scaffold(
       // App Bar
       backgroundColor: bgColor,
@@ -38,15 +42,15 @@ class _BetreiberHomeState extends State<BetreiberHome> {
         centerTitle: true,
         backgroundColor: primaryColor,
         actions: [
-          IconButton(
+IconButton(
             icon: Image.asset('assets/images/avatar_profile.png'),
             onPressed: () {
               var profilePicture =
-              Image.asset('assets/images/avatar_profile.png');
+                  Image.asset('assets/images/avatar_profile.png');
               logger.t('Profile button clicked with ' +
                   widget.userId +
                   ' as userId');
-              //Navigate to Profile Page
+              //Navigate to profile page
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -104,7 +108,7 @@ class _BetreiberHomeState extends State<BetreiberHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Einnahme verfolgen',
+                              LocaleData.einnahme_verfolgen.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
@@ -154,7 +158,7 @@ class _BetreiberHomeState extends State<BetreiberHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Ersatzteile verfolgen',
+                              LocaleData.ersatzteile_verfolgen.getString(context),
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,
