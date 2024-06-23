@@ -158,7 +158,7 @@ IconButton(
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 30.0),
                             child: Text(
-                              'Ersatzteile verfolgen',
+                              LocaleData.ersatzteile_verfolgen,
                               style: TextStyle(
                                 fontSize: 23,
                                 color: primaryColor,

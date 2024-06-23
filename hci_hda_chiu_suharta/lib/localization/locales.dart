@@ -67,6 +67,7 @@ mixin LocaleData{
   static const String amount = "Amount";
   static const String total = "Total";
   static const String betrag = "Betrag";
+  static const String buchung_id = "buchung id";
 
   
 
@@ -131,6 +132,7 @@ mixin LocaleData{
     amount: "Amount",
     total: "Total",
     betrag: "Net income",
+    buchung_id : "Booking ID",
   };
 
   static const Map<String, dynamic> DE = {
@@ -193,6 +195,7 @@ mixin LocaleData{
     amount: "Anzahl",
     total: "Summe",
     betrag: "Betrag",
+    buchung_id : "Buchung ID",
 
 
 

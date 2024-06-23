@@ -174,7 +174,7 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Buchung ID',
+                    LocaleData.buchung_id.getString(context),
                     style: TextStyle(fontSize: 12, color: Colors.black),
                   ),
                   Text(
