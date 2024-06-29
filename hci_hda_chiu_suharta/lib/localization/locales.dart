@@ -5,8 +5,7 @@ const List<MapLocale> LOCALES = [
   MapLocale('de', LocaleData.DE),
 ];
 
-
-mixin LocaleData{
+mixin LocaleData {
   static const String kunde_button1 = "button1";
   static const String kunde_button2 = "button2";
   static const String settings = "settings";
@@ -41,6 +40,17 @@ mixin LocaleData{
   static const String confirm_text = "confirm text";
   static const String confirm_text2 = "confirm text2";
   static const String cancel = "cancel";
+  static const String komponente = "Komponente";
+  static const String zubehoer = "Zubehoer";
+  static const String brakes = "Brakes";
+  static const String chains = "Chains";
+  static const String saddle = "Saddle";
+  static const String tyres = "Tyres";
+  static const String spokes = "spokes";
+  static const String bikeLocks = "Bike Locks";
+  static const String lights = "Lights";
+  static const String luggageRacks = "Luggage Racks";
+  static const String bikePumps = "Bike Pumps";
 
   //Auftraege verfolgen
   static const String buchung_erstellt = "buchung erstellt";
@@ -50,14 +60,16 @@ mixin LocaleData{
   static const String in_bearbeitung = "in bearbeitung";
   static const String in_bearbeitung2 = "in bearbeitung2";
   static const String fertig = "fertig";
-  static const String buchung_verfolgen = "Buchung verfolgen";
   static const String input_bookingnum = "input booking num";
   static const String ihreBuchung = "Ihre Buchung";
   static const String finish_booking = "finish booking";
   static const String finish_booking_confirm = "finish booking confirm";
   static const String confirm_parts = "confirm parts";
   static const String confirm_parts2 = "confirm parts 2";
-  
+  static const String buchungs_verfolgen = "buchungs verfolgen";
+  static const String buchungsnummer_eingeben = "buchungsnummer eingeben";
+  static const String bestatigt = "bestatigt";
+
   //Betreiber Einnahme verfolgen
   static const String einnahme = "Einnahme";
   static const String ausgabe = "Ausgabe";
@@ -68,8 +80,6 @@ mixin LocaleData{
   static const String total = "Total";
   static const String betrag = "Betrag";
   static const String buchung_id = "buchung id";
-
-  
 
   static const Map<String, dynamic> EN = {
     kunde_button1: "Repair booking",
@@ -106,6 +116,8 @@ mixin LocaleData{
     confirm_text: "Are you sure you want to book this repair?",
     cancel: "Cancel",
     confirm_text2: "Repair successfully booked",
+    komponente: "Component",
+    zubehoer: "Spareparts",
 
     //Auftraege verfolgen
     buchung_erstellt: "Booking created",
@@ -115,13 +127,15 @@ mixin LocaleData{
     in_bearbeitung: "In Processing",
     in_bearbeitung2: "Your bicycle is currently being repaired",
     fertig: "Finish",
-    buchung_verfolgen: "Track your Booking",
     input_bookingnum: "Input your booking number",
     ihreBuchung: "Your booking",
     finish_booking: "Finish Booking",
     finish_booking_confirm: "Are you sure you want to finish this booking?",
     confirm_parts: "Confirm parts",
     confirm_parts2: "Confirm additional Spareparts",
+    buchungs_verfolgen: "Track your booking",
+    buchungsnummer_eingeben: "Input your booking number",
+    bestatigt: "Confirm",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Income",
@@ -132,7 +146,7 @@ mixin LocaleData{
     amount: "Amount",
     total: "Total",
     betrag: "Net income",
-    buchung_id : "Booking ID",
+    buchung_id: "Booking ID",
   };
 
   static const Map<String, dynamic> DE = {
@@ -152,7 +166,8 @@ mixin LocaleData{
     no_account: "Sie haben noch kein Konto?",
     get_started: "Los geht's",
     full_name: "Vollständiger Name",
-    agree_personal_data: "Ich stimme der Verarbeitung personenbezogener Daten zu",
+    agree_personal_data:
+        "Ich stimme der Verarbeitung personenbezogener Daten zu",
     have_account: "Haben Sie bereits ein Konto?",
     enter_full_name: "Geben Sie Ihren vollständigen Namen ein",
 
@@ -169,6 +184,8 @@ mixin LocaleData{
     confirm_text: "Möchten Sie diese Reparatur wirklich buchen?",
     cancel: "Abbrechen",
     confirm_text2: "Reparatur erfolgreich gebucht",
+    komponente: "Komponente",
+    zubehoer: "Zubehoer",
 
     //Auftraege verfolgen
     buchung_erstellt: "Buchung erstellt",
@@ -178,13 +195,15 @@ mixin LocaleData{
     in_bearbeitung: "In Bearbeitung",
     in_bearbeitung2: "Ihr Fahrrad wird gerade repariert",
     fertig: "Fertig",
-    buchung_verfolgen: "Ihre Buchung verfolgen",
     input_bookingnum: "Buchungsnummer eingeben",
     ihreBuchung: "Ihre Buchung",
     finish_booking: "Buchung beenden",
     finish_booking_confirm: "Möchten Sie diese Buchung wirklich beenden?",
     confirm_parts: "Ersatzteile bestätigen",
     confirm_parts2: "Zusätzliche Ersatzteile bestätigen",
+    buchungs_verfolgen: "Ihre Buchung verfolgen",
+    buchungsnummer_eingeben: "Buchungsnummer eingeben",
+    bestatigt: "Bestätigt",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Einnahme",
@@ -195,10 +214,6 @@ mixin LocaleData{
     amount: "Anzahl",
     total: "Summe",
     betrag: "Betrag",
-    buchung_id : "Buchung ID",
-
-
-
-
+    buchung_id: "Buchung ID",
   };
 }

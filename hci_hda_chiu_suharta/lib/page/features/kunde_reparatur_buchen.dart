@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
@@ -8,6 +7,7 @@ import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../class/Booking.dart';
+import '../../localization/locales.dart';
 
 Color primaryColor = lightColorScheme.primary;
 Color bgColor = lightColorScheme.background;
@@ -23,23 +23,34 @@ class ReparaturBuchen extends StatefulWidget {
 }
 
 class _ReparaturBuchenState extends State<ReparaturBuchen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late TabController _tabController;
   int _totalPrice = 0;
-
-  final _tabs = [
-    Tab(text: 'Komponente'),
-    Tab(text: 'Zubehör'),
-  ];
-
-  List<bool> _komponenteChecked = List.generate(5, (_) => false);
-  List<bool> _zubehoerChecked = List.generate(4, (_) => false);
+  late List<Tab> _tabs;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
+    _tabs = [];
+    _tabController = TabController(length: 2, vsync: this);
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final newTabs = [
+      Tab(text: LocaleData.komponente.getString(context)),
+      Tab(text: LocaleData.zubehoer.getString(context)),
+    ];
+    if (_tabs != newTabs) {
+      _tabs = newTabs;
+      _tabController.dispose();
+      _tabController = TabController(length: _tabs.length, vsync: this);
+    }
+  }
+
+  List<bool> _komponenteChecked = List.generate(5, (_) => false);
+  List<bool> _zubehoerChecked = List.generate(4, (_) => false);
 
   @override
   void dispose() {
@@ -512,7 +523,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                   },
                 ),
                 TextButton(
-                  child: Text(LocaleData.front.getString(context)),
+                  child: Text(LocaleData.bestatigt.getString(context)),
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
@@ -528,7 +539,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
     Fahrrarzt fahrrarzt =
         Provider.of<FahrrarztProvider>(context, listen: false).fahrrarzt;
     final warehouse = fahrrarzt.warehouse;
-    
+
     List<Map<String, dynamic>> komponenteList = [];
     List<Map<String, dynamic>> zubehoerList = [];
 
@@ -541,24 +552,30 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
         if (i == 0 || i == 3 || i == 4) {
           if (i == 0) {
             if (frontBrake) {
-              komponenteList.add({"name": "front ${sparepart.name}", "done": false});
+              komponenteList
+                  .add({"name": "front ${sparepart.name}", "done": false});
             }
             if (rearBrake) {
-              komponenteList.add({"name": "rear ${sparepart.name}", "done": false});
+              komponenteList
+                  .add({"name": "rear ${sparepart.name}", "done": false});
             }
           } else if (i == 3) {
             if (frontTyre) {
-              komponenteList.add({"name": "front ${sparepart.name}", "done": false});
+              komponenteList
+                  .add({"name": "front ${sparepart.name}", "done": false});
             }
             if (rearTyre) {
-              komponenteList.add({"name": "rear ${sparepart.name}", "done": false});
+              komponenteList
+                  .add({"name": "rear ${sparepart.name}", "done": false});
             }
           } else if (i == 4) {
             if (frontSpoke) {
-              komponenteList.add({"name": "front ${sparepart.name}", "done": false});
+              komponenteList
+                  .add({"name": "front ${sparepart.name}", "done": false});
             }
             if (rearSpoke) {
-              komponenteList.add({"name": "rear ${sparepart.name}", "done": false});
+              komponenteList
+                  .add({"name": "rear ${sparepart.name}", "done": false});
             }
           }
         } else {

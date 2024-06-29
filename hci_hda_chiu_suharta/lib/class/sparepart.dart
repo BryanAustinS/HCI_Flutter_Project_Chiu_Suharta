@@ -1,4 +1,4 @@
-class Sparepart{
+class Sparepart {
   String? name;
   int? buyPrice; //Price to restock item
   int? sellPrice; //Price to sell to customer
