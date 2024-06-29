@@ -70,6 +70,17 @@ mixin LocaleData {
   static const String buchungsnummer_eingeben = "buchungsnummer eingeben";
   static const String bestatigt = "bestatigt";
 
+  //Auftraege ansehen
+  static const String meineReparaturen = "meine reparaturen";
+  static const String verfugbareBooking = "verfugbare booking";
+  static const String wahlen = "wahlen";
+  static const String showDetails = "show details";
+  static const String chooseBooking = "choose booking";
+  static const String chooseBookingDetails = "choose booking details";
+  static const String details = "details";
+  static const String addSpareParts = "addSparePart";
+  static const String save = "Save";
+
   //Betreiber Einnahme verfolgen
   static const String einnahme = "Einnahme";
   static const String ausgabe = "Ausgabe";
@@ -117,7 +128,7 @@ mixin LocaleData {
     cancel: "Cancel",
     confirm_text2: "Repair successfully booked",
     komponente: "Component",
-    zubehoer: "Spareparts",
+    zubehoer: "Accesories",
 
     //Auftraege verfolgen
     buchung_erstellt: "Booking created",
@@ -136,6 +147,17 @@ mixin LocaleData {
     buchungs_verfolgen: "Track your booking",
     buchungsnummer_eingeben: "Input your booking number",
     bestatigt: "Confirm",
+
+    //Auftraege ansehen
+    meineReparaturen: "My repairs",
+    verfugbareBooking: "Available Bookings",
+    wahlen: "Choose",
+    showDetails: "Show Details",
+    chooseBooking: "Choose Booking",
+    chooseBookingDetails: "Do you want to choose this booking?",
+    details: "Details",
+    addSpareParts: "Add Spare Part",
+    save: "Save",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Income",
@@ -174,6 +196,7 @@ mixin LocaleData {
     //Home pages
     einnahme_verfolgen: "Einnahme verfolgen",
     ersatzteile_verfolgen: "Ersatzteile verfolgen",
+    auftraege_ansehen: "Auftraege ansehen",
 
     //Reparatur buchen
     subtotal: "Summe",
@@ -204,6 +227,17 @@ mixin LocaleData {
     buchungs_verfolgen: "Ihre Buchung verfolgen",
     buchungsnummer_eingeben: "Buchungsnummer eingeben",
     bestatigt: "Bestätigt",
+
+    //Auftraege ansehen
+    meineReparaturen: "Meine Reparaturen",
+    verfugbareBooking: "Verfgbare Auftraege",
+    wahlen: "Wählen",
+    showDetails: "Details ansehen",
+    chooseBooking: "Auftraege wählen",
+    chooseBookingDetails: "Mochten Sie diesen Auftag wirklich wählen?",
+    details: "Details",
+    addSpareParts: "Ersatzteile hinzufuegen",
+    save: "Speichern",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Einnahme",

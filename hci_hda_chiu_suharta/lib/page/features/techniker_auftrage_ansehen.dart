@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hci_hda_chiu_suharta/class/sparepart.dart';
 import 'package:lottie/lottie.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import '../../theme/theme.dart';
+import '../../localization/locales.dart';
 
 class AuftrageAnsehen extends StatefulWidget {
   const AuftrageAnsehen({Key? key}) : super(key: key);
@@ -23,7 +25,6 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
         );
     Color primaryColor = lightColorScheme.primary;
     Color bgColor = lightColorScheme.background;
-    Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -44,8 +45,8 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
       body: Column(
         children: [
           Text(
-            'Meine Reparaturen',
-            style: TextStyle(fontSize: 26, fontFamily: 'Montserrat'),
+            LocaleData.meineReparaturen.getString(context),
+            style: const TextStyle(fontSize: 26, fontFamily: 'Montserrat'),
           ),
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
@@ -54,10 +55,10 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Text('Something went wrong');
+                  return const Text('Something went wrong');
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text('Loading');
+                  return const Text('Loading');
                 }
                 var myBookings = snapshot.data!.docs.where((booking) {
                   final data = booking.data() as Map<String, dynamic>;
@@ -121,9 +122,9 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                       showDetailDialog(
                                           context, data, booking.id);
                                     },
-                                    child: const Text(
-                                      'Show Details',
-                                      style: TextStyle(
+                                    child: Text(
+                                      LocaleData.showDetails.getString(context),
+                                      style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 24,
                                         fontFamily: 'Poppins-Bold',
@@ -147,9 +148,9 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                         'status': 'finished',
                                       });
                                     },
-                                    child: const Text(
-                                      'Finish',
-                                      style: TextStyle(
+                                    child: Text(
+                                      LocaleData.fertig.getString(context),
+                                      style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 24,
                                         fontFamily: 'Poppins-Bold',
@@ -172,8 +173,8 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
           const SizedBox(
             height: 10,
           ),
-          const Text('Available Bookings',
-              style: TextStyle(
+          Text(LocaleData.verfugbareBooking.getString(context),
+              style: const TextStyle(
                 fontSize: 26,
                 fontFamily: 'Montserrat',
               )),
@@ -244,15 +245,18 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Text('Choose Booking'),
-                                        content: const Text(
-                                            'Do you want to choose this booking?'),
+                                        title: Text(LocaleData.chooseBooking
+                                            .getString(context)),
+                                        content: Text(LocaleData
+                                            .chooseBookingDetails
+                                            .getString(context)),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
-                                            child: const Text('Cancel'),
+                                            child: Text(LocaleData.cancel
+                                                .getString(context)),
                                           ),
                                           TextButton(
                                             onPressed: () {
@@ -265,16 +269,17 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                               });
                                               Navigator.pop(context);
                                             },
-                                            child: const Text('Confirm'),
+                                            child: Text(LocaleData.bestatigt
+                                                .getString(context)),
                                           ),
                                         ],
                                       );
                                     },
                                   );
                                 },
-                                child: const Text(
-                                  'Choose',
-                                  style: TextStyle(
+                                child: Text(
+                                  LocaleData.wahlen.getString(context),
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 24,
                                     fontFamily: 'Poppins-Bold',
@@ -317,14 +322,14 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                 .toList();
 
             return AlertDialog(
-              title: const Text('Details'),
+              title: Text(LocaleData.details.getString(context)),
               content: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Components:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      LocaleData.komponente.getString(context),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     for (int i = 0; i < components.length; i++)
                       CheckboxListTile(
@@ -337,8 +342,8 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                           });
                         },
                       ),
-                    const Text(
-                      'Accessories:',
+                    Text(
+                      LocaleData.zubehoer.getString(context),
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     for (int i = 0; i < accessories.length; i++)
@@ -360,21 +365,21 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Cancel'),
+                  child: Text(LocaleData.cancel.getString(context)),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                     showAddSparePartDialog(context, bookingId);
                   },
-                  child: const Text('Add Spare Part'),
+                  child: Text(LocaleData.addSpareParts.getString(context)),
                 ),
                 TextButton(
                   onPressed: () {
                     updateBookingDetails(bookingId, components, accessories);
                     Navigator.pop(context);
                   },
-                  child: const Text('Save'),
+                  child: Text(LocaleData.save.getString(context)),
                 ),
               ],
             );
@@ -386,70 +391,74 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
 
   void showAddSparePartDialog(BuildContext context, String bookingId) {
     final spareParts = FahrrarztProvider().fahrrarzt.warehouse!.keys.toList();
-    final List<bool> selectedParts = List<bool>.filled(spareParts.length, false);
+    final List<bool> selectedParts =
+        List<bool>.filled(spareParts.length, false);
     final Map<Sparepart, TextEditingController> partPriceControllers = {
-      for (var part in spareParts) part: TextEditingController(text: part.sellPrice.toString()),
+      for (var part in spareParts)
+        part: TextEditingController(text: part.sellPrice.toString()),
     };
 
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Add Spare Parts'),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (int i = 0; i < spareParts.length; i++)
-                      Column(
-                        children: [
-                          CheckboxListTile(
-                            title: Text('${spareParts[i].name} - ${spareParts[i].sellPrice}'),
-                            value: selectedParts[i],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                selectedParts[i] = value ?? false;
-                              });
-                            },
-                          ),
-                          if (selectedParts[i])
-                            TextField(
-                              controller: partPriceControllers[spareParts[i]],
-                              decoration: InputDecoration(
-                                labelText: 'Price for ${spareParts[i].name}',
-                              ),
-                              keyboardType: TextInputType.number,
+                title: Text(LocaleData.addSpareParts.getString(context)),
+                content: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < spareParts.length; i++)
+                        Column(
+                          children: [
+                            CheckboxListTile(
+                              title: Text(
+                                  '${spareParts[i].name} - ${spareParts[i].sellPrice}'),
+                              value: selectedParts[i],
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  selectedParts[i] = value ?? false;
+                                });
+                              },
                             ),
-                        ],
-                      ),
-                  ],
+                            if (selectedParts[i])
+                              TextField(
+                                controller: partPriceControllers[spareParts[i]],
+                                decoration: InputDecoration(
+                                  labelText: 'Price for ${spareParts[i].name}',
+                                ),
+                                keyboardType: TextInputType.number,
+                              ),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-              actions: <Widget> [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: (){
-                    addSpareParts(bookingId, spareParts, selectedParts, partPriceControllers);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Add Spare Part'),
-                )
-              ]
-            );
-          }
-        );
-      }
-    );
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(LocaleData.cancel.getString(context)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      addSpareParts(bookingId, spareParts, selectedParts,
+                          partPriceControllers);
+                      Navigator.pop(context);
+                    },
+                    child: Text(LocaleData.addSpareParts.getString(context)),
+                  )
+                ]);
+          });
+        });
   }
 
-  void addSpareParts(String bookingId, List<Sparepart> parts, List<bool> selectedParts, Map<Sparepart, TextEditingController> partPriceControllers) {
-    final List<Map<String,dynamic>> spareParts = [];
+  void addSpareParts(
+      String bookingId,
+      List<Sparepart> parts,
+      List<bool> selectedParts,
+      Map<Sparepart, TextEditingController> partPriceControllers) {
+    final List<Map<String, dynamic>> spareParts = [];
     for (int i = 0; i < selectedParts.length; i++) {
       if (selectedParts[i]) {
         spareParts.add({
