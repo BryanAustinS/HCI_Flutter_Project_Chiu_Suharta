@@ -51,6 +51,7 @@ mixin LocaleData {
   static const String lights = "Lights";
   static const String luggageRacks = "Luggage Racks";
   static const String bikePumps = "Bike Pumps";
+  static const String your_booking_id = "Your booking ID is";
 
   //Auftraege verfolgen
   static const String buchung_erstellt = "buchung erstellt";
@@ -129,6 +130,7 @@ mixin LocaleData {
     confirm_text2: "Repair successfully booked",
     komponente: "Component",
     zubehoer: "Accesories",
+    your_booking_id: "Your booking ID is",
 
     //Auftraege verfolgen
     buchung_erstellt: "Booking created",
@@ -209,6 +211,7 @@ mixin LocaleData {
     confirm_text2: "Reparatur erfolgreich gebucht",
     komponente: "Komponente",
     zubehoer: "Zubehoer",
+    your_booking_id: "Ihre Buchungsnummer lautet",
 
     //Auftraege verfolgen
     buchung_erstellt: "Buchung erstellt",

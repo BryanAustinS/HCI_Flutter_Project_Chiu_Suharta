@@ -31,7 +31,8 @@ class Booking{
   }
 
   Future addUserBooking(Map<String, dynamic> userInfoMap) async {
-    return await FirebaseFirestore.instance.collection('booking').add(userInfoMap);
+    DocumentReference docRef = await FirebaseFirestore.instance.collection('booking').add(userInfoMap);
+    return docRef.id;
   }
 
   Future<String?> fetchUserName() async {

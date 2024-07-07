@@ -7,7 +7,7 @@ import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../class/Booking.dart';
-import '../../localization/locales.dart';
+//import '../../localization/locales.dart';
 
 Color primaryColor = lightColorScheme.primary;
 Color bgColor = lightColorScheme.background;
@@ -105,7 +105,9 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
   }
 
   Widget _buildKomponenteList() {
-    Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+    Fahrrarzt fahrrarzt = Provider
+        .of<FahrrarztProvider>(context)
+        .fahrrarzt;
 
     return Container(
       color: lightColorScheme.background,
@@ -140,7 +142,9 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
   }
 
   Widget _buildZubehoerList() {
-    Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+    Fahrrarzt fahrrarzt = Provider
+        .of<FahrrarztProvider>(context)
+        .fahrrarzt;
     return Container(
       color: lightColorScheme.background,
       child: ListView.builder(
@@ -249,10 +253,10 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                   activeColor: primaryColor,
                   onChanged: _komponenteChecked[0]
                       ? (bool value) {
-                          setState(() {
-                            frontBrake = value;
-                          });
-                        }
+                    setState(() {
+                      frontBrake = value;
+                    });
+                  }
                       : null),
             ],
           ),
@@ -271,10 +275,10 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                   activeColor: primaryColor,
                   onChanged: _komponenteChecked[0]
                       ? (bool value) {
-                          setState(() {
-                            rearBrake = value;
-                          });
-                        }
+                    setState(() {
+                      rearBrake = value;
+                    });
+                  }
                       : null),
             ],
           ),
@@ -303,10 +307,10 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                   activeColor: primaryColor,
                   onChanged: _komponenteChecked[3]
                       ? (bool value) {
-                          setState(() {
-                            frontTyre = value;
-                          });
-                        }
+                    setState(() {
+                      frontTyre = value;
+                    });
+                  }
                       : null),
             ],
           ),
@@ -325,10 +329,10 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                   activeColor: primaryColor,
                   onChanged: _komponenteChecked[3]
                       ? (bool value) {
-                          setState(() {
-                            rearTyre = value;
-                          });
-                        }
+                    setState(() {
+                      rearTyre = value;
+                    });
+                  }
                       : null),
             ],
           ),
@@ -357,10 +361,10 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                   activeColor: primaryColor,
                   onChanged: _komponenteChecked[4]
                       ? (bool value) {
-                          setState(() {
-                            frontSpoke = value;
-                          });
-                        }
+                    setState(() {
+                      frontSpoke = value;
+                    });
+                  }
                       : null),
             ],
           ),
@@ -379,10 +383,10 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
                   activeColor: primaryColor,
                   onChanged: _komponenteChecked[4]
                       ? (bool value) {
-                          setState(() {
-                            rearSpoke = value;
-                          });
-                        }
+                    setState(() {
+                      rearSpoke = value;
+                    });
+                  }
                       : null),
             ],
           ),
@@ -392,7 +396,9 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
   }
 
   Widget _buildSubtotal() {
-    Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
+    Fahrrarzt fahrrarzt = Provider
+        .of<FahrrarztProvider>(context)
+        .fahrrarzt;
     final warehouse = fahrrarzt.warehouse;
     int totalPrice = 0;
 
@@ -477,25 +483,19 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: _komponenteChecked.any((checked) => checked) ||
-                _zubehoerChecked.any((checked) => checked)
+            _zubehoerChecked.any((checked) => checked)
             ? primaryColor
             : Colors.grey,
       ),
       onPressed: _komponenteChecked.any((checked) => checked) ||
-              _zubehoerChecked.any((checked) => checked)
+          _zubehoerChecked.any((checked) => checked)
           ? () async {
-              bool confirm = await _showConfirmationDialog();
-              if (confirm) {
-                await _confirmBooking();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => KundeHome(userId: widget.userId),
-                  ),
-                  (route) => false,
-                );
-              }
-            }
+        bool confirm = await _showConfirmationDialog();
+        if (confirm) {
+          String bookingId = await _confirmBooking();
+          await _showBookingId(bookingId);
+        }
+      }
           : null,
       child: Text(
         LocaleData.confirm.getString(context),
@@ -510,34 +510,60 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
 
   Future<bool> _showConfirmationDialog() async {
     return await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(LocaleData.confirm_booking.getString(context)),
-              content: Text(LocaleData.confirm_text.getString(context)),
-              actions: <Widget>[
-                TextButton(
-                  child: Text(LocaleData.cancel.getString(context)),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-                TextButton(
-                  child: Text(LocaleData.bestatigt.getString(context)),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          },
-        ) ??
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(LocaleData.confirm_booking.getString(context)),
+          content: Text(LocaleData.confirm_text.getString(context)),
+          actions: <Widget>[
+            TextButton(
+              child: Text(LocaleData.cancel.getString(context)),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              child: Text(LocaleData.bestatigt.getString(context)),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    ) ??
         false;
   }
 
-  Future<void> _confirmBooking() async {
+  Future _showBookingId(String bookingId) async {
+      showDialog(context: context, builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(LocaleData.confirm_booking.getString(context)),
+        content: Text(
+            '${LocaleData.your_booking_id.getString(context)}: $bookingId'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => KundeHome(userId: widget.userId),
+                ),
+                    (route) => false,
+              );
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    });
+  }
+
+  Future<String> _confirmBooking() async {
     Fahrrarzt fahrrarzt =
-        Provider.of<FahrrarztProvider>(context, listen: false).fahrrarzt;
+        Provider
+            .of<FahrrarztProvider>(context, listen: false)
+            .fahrrarzt;
     final warehouse = fahrrarzt.warehouse;
 
     List<Map<String, dynamic>> komponenteList = [];
@@ -607,11 +633,12 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
       'zubehoer': zubehoerList,
       'price': _totalPrice,
     };
-    await booking.addUserBooking(userBookingMap);
+    String bookingId = await booking.addUserBooking(userBookingMap);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(LocaleData.confirm_text2.getString(context)),
       ),
     );
+    return bookingId;
   }
 }
