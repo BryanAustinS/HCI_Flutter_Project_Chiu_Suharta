@@ -39,7 +39,4 @@ class Booking{
     final userDoc = await FirebaseFirestore.instance.collection('user').doc(userId).get();
     return userDoc.data()?['name'];
   }
-
-  
-
 }
