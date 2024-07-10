@@ -141,12 +141,7 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                   ),
                                   child: TextButton(
                                     onPressed: () {
-                                      FirebaseFirestore.instance
-                                          .collection('booking')
-                                          .doc(booking.id)
-                                          .update({
-                                        'status': 'finished',
-                                      });
+                                      showConfirmDialog(context, booking.id);
                                     },
                                     child: Text(
                                       LocaleData.fertig.getString(context),
@@ -364,12 +359,6 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                  },
-                  child: Text(LocaleData.cancel.getString(context)),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
                     showAddSparePartDialog(context, bookingId);
                   },
                   child: Text(LocaleData.addSpareParts.getString(context)),
@@ -384,6 +373,35 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
               ],
             );
           },
+        );
+      },
+    );
+  }
+
+  void showConfirmDialog(BuildContext context, String bookingId){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(LocaleData.confirm.getString(context)),
+          content: Text(LocaleData.finishDetails.getString(context)),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(LocaleData.cancel.getString(context)),
+            ),
+            TextButton(
+              onPressed: () {
+                FirebaseFirestore.instance.collection('booking').doc(bookingId).update({
+                  'status': 'finished',
+                });
+                Navigator.pop(context);
+              },
+              child: Text(LocaleData.confirm.getString(context)),
+            ),
+          ],
         );
       },
     );

@@ -81,6 +81,7 @@ mixin LocaleData {
   static const String details = "details";
   static const String addSpareParts = "addSparePart";
   static const String save = "Save";
+  static const String finishDetails = "Confirm Details";
 
   //Betreiber Einnahme verfolgen
   static const String einnahme = "Einnahme";
@@ -160,6 +161,7 @@ mixin LocaleData {
     details: "Details",
     addSpareParts: "Add Spare Part",
     save: "Save",
+    finishDetails: "Are you sure you want to finish this booking?",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Income",
@@ -233,7 +235,7 @@ mixin LocaleData {
 
     //Auftraege ansehen
     meineReparaturen: "Meine Reparaturen",
-    verfugbareBooking: "Verfgbare Auftraege",
+    verfugbareBooking: "Verfugbare Auftraege",
     wahlen: "Wählen",
     showDetails: "Details ansehen",
     chooseBooking: "Auftraege wählen",
@@ -241,6 +243,7 @@ mixin LocaleData {
     details: "Details",
     addSpareParts: "Ersatzteile hinzufuegen",
     save: "Speichern",
+    finishDetails: "Möchten Sie diesen Auftrag wirklich beenden?",
 
     //Betreiber Einnahme verfolgen
     einnahme: "Einnahme",
