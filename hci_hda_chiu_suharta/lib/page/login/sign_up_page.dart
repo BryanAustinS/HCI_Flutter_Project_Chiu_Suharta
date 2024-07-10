@@ -279,7 +279,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await _firestore.collection('user').doc(user.uid).set({
           'name': name,
           'email': email,
-          'role': 'kunde',
+          'role': 'Kunde',
         });
         logger.t("User is successfully created");
         // Navigate to the desired screen or show success message
