@@ -4,6 +4,7 @@ import 'package:hci_hda_chiu_suharta/class/sparepart.dart';
 import 'package:lottie/lottie.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:logger/logger.dart';
 
 import '../../theme/theme.dart';
 import '../../localization/locales.dart';
@@ -16,6 +17,7 @@ class AuftrageAnsehen extends StatefulWidget {
 }
 
 class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
+  Logger logger = Logger();
   @override
   Widget build(BuildContext context) {
     var bodyStyle = Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -297,6 +299,47 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
     );
   }
 
+  void updateStock(String name, bool isChecked) async {
+    logger.i('Updating stock for $name');
+    logger.i('Is checked: $isChecked');
+    if(name == 'front Tyres' || name == 'rear Tyres'){
+      name = 'Tyres';
+    }
+
+    if(name == 'front Brakes' || name == 'rear Brakes'){
+      name = 'Brakes';
+    }
+
+    if(name == 'front Spokes' || name == 'rear Spokes'){
+      name = 'Spokes';
+    }
+    DocumentReference stockRef =
+        FirebaseFirestore.instance.collection('stock').doc('BlQHxe7XnhytZnMzDxNW');
+    DocumentSnapshot stockDoc = await stockRef.get();
+    logger.i('Stock doc: ${stockDoc.data()}');
+    Map<String, dynamic> stockData = stockDoc.data() as Map<String, dynamic>;
+    if (!stockData.containsKey(name)) {
+      logger.e('Stock data for $name is null or does not contain the expected field.');
+      return;
+    }
+
+    if(stockDoc.exists){
+      int currentStock = stockData[name] ?? 0;
+      logger.i('Current stock: $currentStock');
+
+      if(isChecked){
+        currentStock--;
+      } else {
+        currentStock++;
+      }
+      await stockRef.update({
+        name: currentStock,
+      });
+      logger.i('Current stock for $name: $currentStock');
+    }
+
+  }
+
   void showDetailDialog(
       BuildContext context, Map<String, dynamic> data, String bookingId) {
     showDialog(
@@ -331,6 +374,7 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                         title: Text(components[i]['name']),
                         value: componentDone[i],
                         onChanged: (bool? value) {
+                          updateStock(components[i]['name'], value ?? false);
                           setState(() {
                             componentDone[i] = value ?? false;
                             components[i]['done'] = componentDone[i];
@@ -346,6 +390,7 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                         title: Text(accessories[i]['name']),
                         value: accessoryDone[i],
                         onChanged: (bool? value) {
+                          updateStock(accessories[i]['name'], value ?? false);
                           setState(() {
                             accessoryDone[i] = value ?? false;
                             accessories[i]['done'] = accessoryDone[i];
@@ -378,7 +423,7 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
     );
   }
 
-  void showConfirmDialog(BuildContext context, String bookingId){
+  void showConfirmDialog(BuildContext context, String bookingId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -394,7 +439,10 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
             ),
             TextButton(
               onPressed: () {
-                FirebaseFirestore.instance.collection('booking').doc(bookingId).update({
+                FirebaseFirestore.instance
+                    .collection('booking')
+                    .doc(bookingId)
+                    .update({
                   'status': 'finished',
                 });
                 Navigator.pop(context);
