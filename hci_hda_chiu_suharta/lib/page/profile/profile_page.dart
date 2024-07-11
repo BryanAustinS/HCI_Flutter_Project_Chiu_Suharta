@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hci_hda_chiu_suharta/page/home/betreiber_home.dart';
 import 'package:hci_hda_chiu_suharta/page/home/kunde_home.dart';
 import 'package:hci_hda_chiu_suharta/page/login/welcome_screen.dart';
@@ -79,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Text(
               LocaleData.settings.getString(context),
-              style: TextStyle(
+              style: GoogleFonts.rowdies(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
               ),
@@ -87,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 40),
             Text(
               LocaleData.account.getString(context),
-              style: TextStyle(
+              style: GoogleFonts.rowdies(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
               ),
@@ -119,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                           return Text(
                             snapshot.data!,
-                            style: TextStyle(
+                            style: GoogleFonts.mavenPro(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
@@ -140,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                           return Text(
                             snapshot.data!,
-                            style: TextStyle(
+                            style: GoogleFonts.mavenPro(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                             ),
@@ -155,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 40),
             Text(
               LocaleData.settings.getString(context),
-              style: TextStyle(
+              style: GoogleFonts.rowdies(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
               ),
@@ -224,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     child: Text(
                       LocaleData.logout.getString(context),
-                      style: TextStyle(
+                      style: GoogleFonts.mavenPro(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),

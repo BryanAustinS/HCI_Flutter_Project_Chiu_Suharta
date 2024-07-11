@@ -5,6 +5,7 @@ import 'package:hci_hda_chiu_suharta/page/login/sign_up_page.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 import 'package:hci_hda_chiu_suharta/widgets/welcome_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../localization/locales.dart';
 
@@ -29,9 +30,10 @@ class WelcomeScreen extends StatelessWidget {
                     text: TextSpan(children: [
                       TextSpan(
                           text: LocaleData.welcome_title.getString(context),
-                          style: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.w600,
+                          style: GoogleFonts.dancingScript(
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           )),
                     ]),
                   ),
@@ -56,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
                       buttonText: LocaleData.sign_up.getString(context),
                       onTap: const SignUpScreen(),
                       color: Colors.white,
-                      textColor: lightColorScheme.primary,
+                      textColor: Colors.black,
                     ),
                   ),
                 ],

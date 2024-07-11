@@ -7,6 +7,7 @@ import 'package:hci_hda_chiu_suharta/page/login/sign_in_page.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 import 'package:logger/logger.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../localization/locales.dart';
 
@@ -68,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     Text(
                       LocaleData.get_started.getString(context),
-                      style: TextStyle(
+                      style: GoogleFonts.pacifico(
                         fontSize: 30.0,
                         fontWeight: FontWeight.w900,
                         color: lightColorScheme.primary,
@@ -200,12 +201,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              lightColorScheme.primary),
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.symmetric(
+                              vertical: 15.0,
+                            ),
+                          ),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
                         onPressed: () async {
                           if (_formSignUpKey.currentState!.validate() &&
                               agreePersonalData) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(LocaleData.processing_data.getString(context)),
+                                content: Text(LocaleData.processing_data
+                                    .getString(context)),
                               ),
                             );
                             await _signUp();
@@ -219,7 +236,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           }
                         },
-                        child: Text(LocaleData.sign_up.getString(context)),
+                        child: Text(
+                          LocaleData.sign_up.getString(context),
+                          style: GoogleFonts.mavenPro(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                     const SizedBox(

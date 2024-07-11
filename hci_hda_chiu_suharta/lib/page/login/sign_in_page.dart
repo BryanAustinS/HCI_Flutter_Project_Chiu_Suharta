@@ -11,6 +11,7 @@ import 'package:hci_hda_chiu_suharta/page/home/techniker_home.dart';
 import 'package:hci_hda_chiu_suharta/theme/theme.dart';
 import 'package:hci_hda_chiu_suharta/widgets/custom_scaffold.dart';
 import 'package:logger/logger.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../localization/locales.dart';
 
@@ -29,7 +30,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   var logger = Logger();
-
 
   @override
   void dispose() {
@@ -67,10 +67,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       Text(
                         LocaleData.welcome_back.getString(context),
-                        style: TextStyle(
+                        style: GoogleFonts.pacifico(
                           fontSize: 30.0,
                           fontWeight: FontWeight.w900,
-                          color: lightColorScheme.primary,
+                          color: Color(0xFF1565C0),
                         ),
                       ),
                       const SizedBox(
@@ -116,7 +116,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         decoration: InputDecoration(
                           label: const Text('Password'),
-                          hintText: LocaleData.enter_password.getString(context),
+                          hintText:
+                              LocaleData.enter_password.getString(context),
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
@@ -161,12 +162,28 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                lightColorScheme.primary),
+                            padding:
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.symmetric(
+                                vertical: 15.0,
+                              ),
+                            ),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
                           onPressed: () async {
                             if (_formSignInKey.currentState!.validate() &&
                                 agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(LocaleData.processing_data.getString(context)),
+                                  content: Text(LocaleData.processing_data
+                                      .getString(context)),
                                 ),
                               );
                               await _signIn();
@@ -178,7 +195,14 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
                             }
                           },
-                          child: Text(LocaleData.sign_in.getString(context)),
+                          child: Text(
+                            LocaleData.sign_in.getString(context),
+                            style: GoogleFonts.mavenPro(
+                              fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
+                            )
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -246,24 +270,27 @@ class _SignInScreenState extends State<SignInScreen> {
             logger.t('User is successfully signed in with ' + user.uid);
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => BetreiberHome(userId: user.uid)),
-                (Route<dynamic> route) => false,
+              MaterialPageRoute(
+                  builder: (context) => BetreiberHome(userId: user.uid)),
+              (Route<dynamic> route) => false,
             );
           } else if (role == 'Kunde') {
             Fluttertoast.showToast(msg: "Navigate to kunde homepage");
             logger.t('User is successfully signed in with ' + user.uid);
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => KundeHome(userId: user.uid)),
-                (Route<dynamic> route) => false,
+              MaterialPageRoute(
+                  builder: (context) => KundeHome(userId: user.uid)),
+              (Route<dynamic> route) => false,
             );
           } else if (role == 'Techniker') {
             Fluttertoast.showToast(msg: "Navigate to techniker homepage");
             logger.t('User is successfully signed in with ' + user.uid);
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => TechnikerHome(userId: user.uid)),
-                (Route<dynamic> route) => false,
+              MaterialPageRoute(
+                  builder: (context) => TechnikerHome(userId: user.uid)),
+              (Route<dynamic> route) => false,
             );
           } else {
             Fluttertoast.showToast(msg: 'Unknown role');

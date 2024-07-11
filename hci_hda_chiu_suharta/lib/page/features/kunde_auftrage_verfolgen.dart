@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hci_hda_chiu_suharta/class/fahrrarzt.dart';
 import 'package:lottie/lottie.dart';
 import 'package:logger/logger.dart';
@@ -46,7 +47,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
       StepperData(
         title: StepperText(
           LocaleData.buchung_erstellt.getString(context),
-          textStyle: TextStyle(
+          textStyle: GoogleFonts.mavenPro(
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
@@ -57,7 +58,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
       StepperData(
           title: StepperText(
             LocaleData.buchung_bestatigt.getString(context),
-            textStyle: TextStyle(
+            textStyle: GoogleFonts.mavenPro(
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
@@ -68,7 +69,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
       StepperData(
           title: StepperText(
             LocaleData.in_bearbeitung.getString(context),
-            textStyle: TextStyle(
+            textStyle: GoogleFonts.mavenPro(
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
@@ -78,7 +79,7 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
       StepperData(
         title: StepperText(
           LocaleData.fertig.getString(context),
-          textStyle: TextStyle(
+          textStyle: GoogleFonts.mavenPro(
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),

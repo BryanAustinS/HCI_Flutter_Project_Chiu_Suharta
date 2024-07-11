@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeButton extends StatelessWidget {
   const WelcomeButton({
@@ -38,7 +39,7 @@ class WelcomeButton extends StatelessWidget {
         child: Text(
           buttonText!,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: GoogleFonts.exo2(
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
             color: textColor!,
