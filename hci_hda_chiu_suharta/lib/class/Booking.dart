@@ -29,11 +29,17 @@ class Booking{
       userId: map['userId'],
     );
   }
+  Future<String> addUserBooking(Map<String, dynamic> userInfoMap) async {
+  DocumentReference docRef = await FirebaseFirestore.instance.collection('booking').add(userInfoMap);
 
-  Future addUserBooking(Map<String, dynamic> userInfoMap) async {
-    DocumentReference docRef = await FirebaseFirestore.instance.collection('booking').add(userInfoMap);
-    return docRef.id;
-  }
+  String bookingId = docRef.id; // Retrieve the auto-generated ID
+
+  DocumentReference docRef2 = FirebaseFirestore.instance.collection('allBookings').doc(bookingId);
+  await docRef2.set(userInfoMap); // Set data with the same ID
+  
+  return bookingId; 
+}
+
 
   Future<String?> fetchUserName() async {
     final userDoc = await FirebaseFirestore.instance.collection('user').doc(userId).get();
