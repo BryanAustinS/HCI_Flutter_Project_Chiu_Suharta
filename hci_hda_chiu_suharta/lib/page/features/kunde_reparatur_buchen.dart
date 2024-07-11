@@ -25,7 +25,7 @@ class ReparaturBuchen extends StatefulWidget {
 class _ReparaturBuchenState extends State<ReparaturBuchen>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  int _totalPrice = 0;
+  double _totalPrice = 0;
   late List<Tab> _tabs;
 
   @override
@@ -400,7 +400,7 @@ class _ReparaturBuchenState extends State<ReparaturBuchen>
         .of<FahrrarztProvider>(context)
         .fahrrarzt;
     final warehouse = fahrrarzt.warehouse;
-    int totalPrice = 0;
+    double totalPrice = 0;
 
     //Calculate Komponente prices
     for (int i = 0; i < _komponenteChecked.length; i++) {

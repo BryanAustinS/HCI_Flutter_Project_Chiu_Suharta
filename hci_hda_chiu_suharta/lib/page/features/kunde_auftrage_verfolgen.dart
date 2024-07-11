@@ -651,6 +651,14 @@ class _AuftragVerfolgenState extends State<AuftragVerfolgen> {
         'price': FieldValue.increment(totalPrice),
       });
 
+      await FirebaseFirestore.instance
+          .collection('allBookings')
+          .doc(bookingSnapshot!.id)
+          .update({
+        'additionalSpareParts': updatedParts,
+        'price': FieldValue.increment(totalPrice),
+      });
+
       logger.i("Additional spare parts confirmed successfully.");
     } else {
       logger.w("No booking available to confirm parts.");

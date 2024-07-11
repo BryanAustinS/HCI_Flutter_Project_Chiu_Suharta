@@ -32,7 +32,7 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
 
 
   List<bool> _isExpandedList = List<bool>.generate(20, (_) => false); 
-  var _einnahme = 0;
+  double _einnahme = 0.0;
   final _tabs = [
     Tab(text: LocaleData.einnahme),
     Tab(text: LocaleData.ausgabe),
@@ -120,9 +120,10 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
           final booking = bookings[index];
           return _buildEinnahmeTrailing(
             booking.id,
-            booking['price'],
+            booking['price'].toDouble(),
             booking['userId'],
             List<String>.from(booking['komponente'].map((item) => item['name'])),
+            List<String>.from(booking['additionalSpareParts'].map((item) => item['name'])),
             _isExpandedList,
             index,
             booking['status'],
@@ -134,7 +135,7 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
 }
 
 
-Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<String> ersatzteile, List<bool> isExpandedList, int index, String status) {
+Widget _buildEinnahmeTrailing(String bookingId, double price, String userId, List<String> ersatzteile, List<String> additionalSpareParts, List<bool> isExpandedList, int index, String status) {
   double containerHeight = 0.0;
 
   if (isExpandedList.isNotEmpty && isExpandedList.length > index && isExpandedList[index]) {
@@ -192,7 +193,7 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                     style: TextStyle(fontSize: 12, color: Colors.black),
                   ),
                   Text(
-                    '\€$price',
+                    '\€${price.toStringAsFixed(2)}',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -254,6 +255,20 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
                           );
                         }).toList(),
                       ),
+                      SizedBox(height: 8),
+                      Text('Additional Spare Parts:', style: TextStyle(fontSize: 14)),
+                      SizedBox(height: 4),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: additionalSpareParts.asMap().entries.map((entry) {
+                          int idx = entry.key;
+                          String sparepart = entry.value;
+                          return Text(
+                            '- $sparepart',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          );
+                        }).toList(),
+                      )
                     ],
                   ),
                 ),
@@ -324,9 +339,8 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
   }
 
   Widget _buildSubtotal() {
-    int betrag = 0;
-    int einnahme = 0;
-    int ausgabe = 0;
+    double betrag = 0.0;
+    double ausgabe = 0.0;
 
     Fahrrarzt fahrrarzt = Provider.of<FahrrarztProvider>(context).fahrrarzt;
     final firestore = FirebaseFirestore.instance;
@@ -335,9 +349,9 @@ Widget _buildEinnahmeTrailing(String bookingId, int price, String userId, List<S
 
     // Calculate Einnahme
     firestore.collection('booking').get().then((querySnapshot) {
-      int tempEinnahme = 0;
+      double tempEinnahme = 0.0;
       for (var doc in querySnapshot.docs) {
-        int price = (doc['price']);
+        double price = (doc['price']).toDouble();
         tempEinnahme += price;
       }
       if (mounted) {
