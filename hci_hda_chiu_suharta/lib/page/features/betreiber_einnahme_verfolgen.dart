@@ -102,7 +102,7 @@ class _EinnahmeVerfolgenState extends State<EinnahmeVerfolgen> with SingleTicker
   final firestore = FirebaseFirestore.instance;
 
   return FutureBuilder<QuerySnapshot>(
-    future: firestore.collection('booking').get(),
+    future: firestore.collection('allBookings').get(),
     builder: (context, snapshot) {
       if (snapshot.hasError) {
         return Center(child: Text('Error: ${snapshot.error}'));
