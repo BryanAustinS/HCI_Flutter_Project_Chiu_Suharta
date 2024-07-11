@@ -265,6 +265,14 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                                                 'status': 'confirmed'
                                               });
                                               Navigator.pop(context);
+                                              FirebaseFirestore.instance
+                                                  .collection('allBookings')
+                                                  .doc(booking.id)
+                                                  .update({
+                                                'chosen': true,
+                                                'status': 'confirmed'
+                                              });
+                                              Navigator.pop(context);
                                             },
                                             child: Text(LocaleData.bestatigt
                                                 .getString(context)),
@@ -445,6 +453,12 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
                     .update({
                   'status': 'finished',
                 });
+                FirebaseFirestore.instance
+                    .collection('allBookings')
+                    .doc(bookingId)
+                    .update({
+                  'status': 'finished',
+                });
                 Navigator.pop(context);
               },
               child: Text(LocaleData.confirm.getString(context)),
@@ -544,6 +558,11 @@ class _AuftrageAnsehenState extends State<AuftrageAnsehen> {
       List<Map<String, dynamic>> components,
       List<Map<String, dynamic>> accessories) {
     FirebaseFirestore.instance.collection('booking').doc(bookingId).update({
+      'komponente': components,
+      'zubehoer': accessories,
+      'status': 'processing',
+    });
+    FirebaseFirestore.instance.collection('allBookings').doc(bookingId).update({
       'komponente': components,
       'zubehoer': accessories,
       'status': 'processing',
