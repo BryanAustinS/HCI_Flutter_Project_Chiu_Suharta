@@ -20,9 +20,9 @@ class _BetreiberHomeState extends State<BetreiberHome> {
   var logger = Logger();
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = lightColorScheme.primary;
-    Color bgColor = lightColorScheme.background;
-    Color secondaryColor = Color.fromARGB(245, 245, 245, 245);
+    Color primaryColor = Color(0xFF416FDF);
+    Color bgColor = Color(0xFFFCFDF6);
+    Color secondaryColor = Color(0xF5F5F5F5);
     var logger = Logger();
 
     return Scaffold(
