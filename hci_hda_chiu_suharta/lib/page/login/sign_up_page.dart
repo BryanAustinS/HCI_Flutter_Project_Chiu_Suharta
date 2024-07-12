@@ -305,7 +305,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'role': 'Kunde',
         });
         logger.t("User is successfully created");
-        // Navigate to the desired screen or show success message
+        // Show snackbar with success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User is successfully created'),
+          ),
+        );
+        // Navigate to the SignInScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignInScreen(),
+          ),
+        );
       } else {
         logger.e("Some error occurred");
         // Show error message
