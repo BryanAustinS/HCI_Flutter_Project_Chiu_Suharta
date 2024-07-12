@@ -219,57 +219,59 @@ Widget _buildEinnahmeTrailing(String bookingId, double price, String userId, Lis
                     borderRadius: BorderRadius.circular(8), // Rounded corners
                   ),
                   padding: EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(LocaleData.kunde_id.getString(context), style: TextStyle(fontSize: 14)),
-                          SizedBox(width: 8),
-                          Text(
-                            '$userId',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Text('Status: ', style: TextStyle(fontSize: 14)),
-                          SizedBox(width: 8),
-                          Text('$status', 
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      Text(LocaleData.ersatzteile.getString(context), style: TextStyle(fontSize: 14)),
-                      SizedBox(height: 4),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: ersatzteile.asMap().entries.map((entry) {
-                          int idx = entry.key;
-                          String ersatzteil = entry.value;
-                          return Text(
-                            '- $ersatzteil',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                          );
-                        }).toList(),
-                      ),
-                      SizedBox(height: 8),
-                      Text('Additional Spare Parts:', style: TextStyle(fontSize: 14)),
-                      SizedBox(height: 4),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: additionalSpareParts.asMap().entries.map((entry) {
-                          int idx = entry.key;
-                          String sparepart = entry.value;
-                          return Text(
-                            '- $sparepart',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                          );
-                        }).toList(),
-                      )
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(LocaleData.kunde_id.getString(context), style: TextStyle(fontSize: 14)),
+                            SizedBox(width: 8),
+                            Text(
+                              '$userId',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text('Status: ', style: TextStyle(fontSize: 14)),
+                            SizedBox(width: 8),
+                            Text('$status', 
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Text(LocaleData.ersatzteile.getString(context), style: TextStyle(fontSize: 14)),
+                        SizedBox(height: 4),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: ersatzteile.asMap().entries.map((entry) {
+                            int idx = entry.key;
+                            String ersatzteil = entry.value;
+                            return Text(
+                              '- $ersatzteil',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(height: 8),
+                        Text('Additional Spare Parts:', style: TextStyle(fontSize: 14)),
+                        SizedBox(height: 4),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: additionalSpareParts.asMap().entries.map((entry) {
+                            int idx = entry.key;
+                            String sparepart = entry.value;
+                            return Text(
+                              '- $sparepart',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                            );
+                          }).toList(),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -444,11 +446,11 @@ Widget _buildEinnahmeTrailing(String bookingId, double price, String userId, Lis
     return ElevatedButton(
       style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
       onPressed: () {
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: ((context) => BetreiberHome(userId: widget.userId)),
-          ),
+              builder: (context) => BetreiberHome(userId: widget.userId)),
+              (Route<dynamic> route) => false,
         );
       },
       child: Text(
